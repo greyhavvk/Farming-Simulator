@@ -1,5 +1,7 @@
-﻿using Core;
+﻿using System;
+using Core;
 using Core.InputManager;
+using Systems.TaskSystem;
 using UnityEngine;
 
 namespace Systems.PlayerSystem
@@ -61,6 +63,16 @@ namespace Systems.PlayerSystem
             var moveVerticalInput = _inputManager.GetVerticalInput();
 
             movement.HandleMovement(moveHorizontalInput, moveVerticalInput);
+        }
+
+        public void TriggerTaskListener(Action<TaskData> updateTaskProgress)
+        {
+            movement._onUpdateTaskProgress += updateTaskProgress;
+        }
+
+        public void ClearTaskListeners()
+        {
+            movement._onUpdateTaskProgress =null;
         }
     }
 }

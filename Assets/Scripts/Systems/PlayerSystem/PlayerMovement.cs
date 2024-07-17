@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using Systems.TaskSystem;
+using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Systems.PlayerSystem
@@ -16,6 +18,8 @@ namespace Systems.PlayerSystem
         private Transform _playerTransform;
         private Vector3 _playerPosition;
         private Vector3 _rayCastOrigin;
+        
+        public Action<TaskData> _onUpdateTaskProgress;
 
         public void Initialize(float moveSpeed)
         {
@@ -46,6 +50,13 @@ namespace Systems.PlayerSystem
             {
                 // Eğer engel yoksa, normal şekilde hareket ettir
                 playerRigidbody.velocity = _movementAmount;
+
+                if (_onUpdateTaskProgress == null) return;
+                var moveTaskData = new MoveTaskData
+                {
+                    moveDirection = new Vector2(verticalInput, horizontalInput)
+                };
+                _onUpdateTaskProgress.Invoke(moveTaskData);
             }
         }
 
