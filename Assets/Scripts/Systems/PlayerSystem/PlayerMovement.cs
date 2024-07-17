@@ -7,6 +7,7 @@ namespace Systems.PlayerSystem
     {
         [SerializeField] private Rigidbody playerRigidbody;
         [SerializeField] private float moveSpeed=5;
+        [SerializeField] private LayerMask layerMask;
         private RaycastHit _hit;
         private bool _isHit;
         private Vector3 _movementDirection;
@@ -14,7 +15,7 @@ namespace Systems.PlayerSystem
         private Vector3 _newPosition;
         private Transform _playerTransform;
         private Vector3 _playerPosition;
-        
+        private Vector3 _rayCastOrigin;
 
         public void Initialize(float moveSpeed)
         {
@@ -22,17 +23,16 @@ namespace Systems.PlayerSystem
             _playerTransform = transform;
         }
 
-        public void HandleMovement(float horizontalInput, float verticalInput, float deltaTime)
+        public void HandleMovement(float horizontalInput, float verticalInput)
         {
-            _movementDirection = new Vector3(horizontalInput, 0f, verticalInput).normalized;
-            _movementAmount = _movementDirection * (moveSpeed * deltaTime);
+            _movementDirection = _playerTransform.forward * verticalInput + _playerTransform.right * horizontalInput;
+            _movementAmount = _movementDirection * moveSpeed ;
 
             // Karakterin yeni pozisyonunu hesapla
             _playerPosition = _playerTransform.position;
-            _newPosition = _playerPosition + _movementAmount;
-
+            _rayCastOrigin=_playerPosition+Vector3.up * .25f;
             // Hareket ederken önümüzde engel var mı diye kontrol et
-            _isHit = Physics.Raycast(_playerPosition, _movementDirection, out _hit, _movementAmount.magnitude);
+            _isHit = Physics.Raycast(_rayCastOrigin, _movementDirection, out _hit, _movementAmount.magnitude* Time.deltaTime, layerMask);
 
             if (_isHit)
             {
@@ -45,7 +45,7 @@ namespace Systems.PlayerSystem
             else
             {
                 // Eğer engel yoksa, normal şekilde hareket ettir
-                playerRigidbody.MovePosition(_newPosition);
+                playerRigidbody.velocity = _movementAmount;
             }
         }
 

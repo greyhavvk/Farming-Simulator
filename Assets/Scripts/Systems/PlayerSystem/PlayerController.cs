@@ -60,7 +60,7 @@ namespace Systems.PlayerSystem
             var moveHorizontalInput = _inputManager.GetHorizontalInput();
             var moveVerticalInput = _inputManager.GetVerticalInput();
 
-            movement.HandleMovement(moveHorizontalInput, moveVerticalInput, Time.deltaTime);
+            movement.HandleMovement(moveHorizontalInput, moveVerticalInput);
         }
     }
 }
