@@ -28,8 +28,7 @@ namespace Systems.PlacementSystem
             return new Vector3(-gridWidth / 2, 0, -gridHeight / 2);
         }
 
-        // ReSharper disable Unity.PerformanceAnalysis
-        public bool IsCellEmpty(Transform itemTransform, List<Vector3List> localPositions)
+        private List<Vector2Int> CalculateCells(Transform itemTransform, List<Vector3List> localPositions)
         {
             var width = Mathf.CeilToInt(localPositions[0].vector3List.Count / cellSize);
             var height = Mathf.CeilToInt(localPositions.Count / cellSize);
@@ -40,13 +39,20 @@ namespace Systems.PlacementSystem
             {
                 for (int j = 0; j < width; j++)
                 {
-                    var localPositionToGlobalPosition = itemTransform.TransformPoint(localPositions[i].vector3List[j])- _gridOrigin;
+                    var localPositionToGlobalPosition = itemTransform.TransformPoint(localPositions[i].vector3List[j]) - _gridOrigin;
                     var row = Mathf.FloorToInt(localPositionToGlobalPosition.x / cellSize);
                     var column = Mathf.FloorToInt(localPositionToGlobalPosition.z / cellSize);
                     var cell = new Vector2Int(row, column);
                     cells.Add(cell);
                 }
             }
+
+            return cells;
+        }
+
+        public bool IsCellEmpty(Transform itemTransform, List<Vector3List> localPositions)
+        {
+            var cells = CalculateCells(itemTransform, localPositions);
 
             try
             {
@@ -59,25 +65,9 @@ namespace Systems.PlacementSystem
             }
         }
 
-        // ReSharper disable Unity.PerformanceAnalysis
         public Vector3 PlaceItem(Transform itemTransform, List<Vector3List> localPositions)
         {
-            var width = Mathf.CeilToInt(localPositions[0].vector3List.Count / cellSize);
-            var height = Mathf.CeilToInt(localPositions.Count / cellSize);
-
-            var cells = new List<Vector2Int>();
-
-            for (int i = 0; i < height; i++)
-            {
-                for (int j = 0; j < width; j++)
-                {
-                    var localPositionToGlobalPosition = itemTransform.TransformPoint(localPositions[i].vector3List[j])- _gridOrigin;
-                    var row = Mathf.FloorToInt(localPositionToGlobalPosition.x / cellSize);
-                    var column = Mathf.FloorToInt(localPositionToGlobalPosition.z / cellSize);
-                    var cell = new Vector2Int(row, column);
-                    cells.Add(cell);
-                }
-            }
+            var cells = CalculateCells(itemTransform, localPositions);
             var itemTransformPosition = itemTransform.position;
 
             try
@@ -88,7 +78,6 @@ namespace Systems.PlacementSystem
             catch (ArgumentOutOfRangeException ex)
             {
                 Debug.LogError($"Error placing item: {ex.Message}");
-                
                 return itemTransformPosition; // Return original position if placement fails
             }
             catch (InvalidOperationException ex)
@@ -100,22 +89,7 @@ namespace Systems.PlacementSystem
 
         public void RemoveItem(Transform itemTransform, List<Vector3List> localPositions)
         {
-            var width = Mathf.CeilToInt(localPositions[0].vector3List.Count / cellSize);
-            var height = Mathf.CeilToInt(localPositions.Count / cellSize);
-
-            var cells = new List<Vector2Int>();
-
-            for (int i = 0; i < height; i++)
-            {
-                for (int j = 0; j < width; j++)
-                {
-                    var localPositionToGlobalPosition = itemTransform.TransformPoint(localPositions[i].vector3List[j])- _gridOrigin;
-                    var row = Mathf.FloorToInt(localPositionToGlobalPosition.x / cellSize);
-                    var column = Mathf.FloorToInt(localPositionToGlobalPosition.z / cellSize);
-                    var cell = new Vector2Int(row, column);
-                    cells.Add(cell);
-                }
-            }
+            var cells = CalculateCells(itemTransform, localPositions);
 
             try
             {
@@ -135,7 +109,6 @@ namespace Systems.PlacementSystem
             var column = Mathf.FloorToInt(localPosition.z / cellSize);
 
             return CalculateGridOrigin() + new Vector3(row * cellSize, 0, column * cellSize);
-
         }
     }
 }
