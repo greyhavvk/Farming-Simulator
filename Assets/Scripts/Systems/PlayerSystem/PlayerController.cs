@@ -13,11 +13,11 @@ namespace Systems.PlayerSystem
         [SerializeField] private PlayerLookAround lookAround;
         [SerializeField] private PlayerSettings playerSettings; // PlayerSettings'i ekledik
 
-        private IInputManager _inputManager;
+        private IPlayerInput _playerInput;
 
-        public void Initialize(IInputManager inputManager)
+        public void Initialize(IPlayerInput playerInput)
         {
-            _inputManager = inputManager;
+            _playerInput = playerInput;
             lookAround.Initialize(playerSettings.TurnSensitivity); // PlayerSettings'ten dönme sensitivity'i alarak initialize ettik
             movement.Initialize(playerSettings.MoveSpeed); // PlayerSettings'ten hareket hızını alarak initialize ettik
         }
@@ -29,7 +29,7 @@ namespace Systems.PlayerSystem
 
         private void HandleInput()
         {
-            if (_inputManager == null)
+            if (_playerInput == null)
             {
                 Debug.LogWarning("InputManager is not assigned.");
                 return;
@@ -44,14 +44,14 @@ namespace Systems.PlayerSystem
 
         private void HandleLookAround()
         {
-            var turnXInput = _inputManager.GetMouseXInput();
-            var turnYInput = _inputManager.GetMouseYInput();
+            var turnXInput = _playerInput.GetMouseXInput();
+            var turnYInput = _playerInput.GetMouseYInput();
             lookAround.HandleLookAround(turnXInput, turnYInput);
         }
 
         private void HandleInteraction()
         {
-            if (_inputManager.IsInteractButtonPressed())
+            if (_playerInput.IsInteractButtonPressed())
             {
                 interaction.HandleInteraction();
             }
@@ -59,8 +59,8 @@ namespace Systems.PlayerSystem
 
         private void HandleMovement()
         {
-            var moveHorizontalInput = _inputManager.GetHorizontalInput();
-            var moveVerticalInput = _inputManager.GetVerticalInput();
+            var moveHorizontalInput = _playerInput.GetHorizontalInput();
+            var moveVerticalInput = _playerInput.GetVerticalInput();
 
             movement.HandleMovement(moveHorizontalInput, moveVerticalInput);
         }

@@ -29,5 +29,20 @@ namespace Core.InputManager.InputType
         {
             return Input.GetAxis("Mouse Y");
         }
+
+        public override bool IsPlacementConfirmed()
+        {
+            return Input.GetKeyDown(KeyCode.C);
+        }
+
+        public override Vector3 ConfirmedPosition()
+        {
+            return Input.mousePosition;
+        }
+
+        public override bool RotateButtonDown()
+        {
+            return Input.GetMouseButtonDown(1);
+        }
     }
 }

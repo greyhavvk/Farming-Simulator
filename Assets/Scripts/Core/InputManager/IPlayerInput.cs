@@ -1,6 +1,6 @@
 ﻿namespace Core.InputManager
 {
-    public interface IInputManager
+    public interface IPlayerInput
     {
         float GetHorizontalInput();
         float GetVerticalInput();

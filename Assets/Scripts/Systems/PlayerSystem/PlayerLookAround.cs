@@ -13,6 +13,7 @@ namespace Systems.PlayerSystem
 
         public void Initialize(float sensitivity )
         {
+            _cameraRotation = cameraBody.localEulerAngles.x;
             turnSensitivity = sensitivity;
             Cursor.lockState = CursorLockMode.Locked; // Fare imleci ekranın ortasında kilitlenir
         }

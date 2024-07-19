@@ -10,5 +10,9 @@ namespace Core.InputManager.InputType
         public abstract bool IsInteractButtonPressed();
         public abstract float GetMouseXInput();
         public abstract float GetMouseYInput();
+        public abstract bool IsPlacementConfirmed();
+        public abstract Vector3 ConfirmedPosition();
+
+        public abstract bool RotateButtonDown();
     }
 }

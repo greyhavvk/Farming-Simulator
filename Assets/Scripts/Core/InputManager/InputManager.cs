@@ -2,7 +2,7 @@
 
 namespace Core.InputManager
 {
-    public class InputManager : MonoBehaviour, IInputManager
+    public class InputManager : MonoBehaviour, IPlayerInput, IPlacementInput
     {
         [SerializeField] private InputType.InputType mouseKeyboardInput;
         private InputType.InputType _inputType;
@@ -42,6 +42,21 @@ namespace Core.InputManager
         public float GetMouseYInput()
         {
             return _inputType.GetMouseYInput();
+        }
+
+        public bool PlacementConfirmedButtonDown()
+        {
+            return _inputType.IsPlacementConfirmed();
+        }
+
+        public Vector3 ConfirmedPosition()
+        {
+            return _inputType.ConfirmedPosition();
+        }
+
+        public bool RotateButtonDown()
+        {
+            return _inputType.RotateButtonDown();
         }
     }
 }

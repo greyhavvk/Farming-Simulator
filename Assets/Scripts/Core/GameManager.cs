@@ -1,3 +1,4 @@
+using Systems.PlacementSystem;
 using Systems.PlayerSystem;
 using Systems.TaskSystem;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace Core
         [SerializeField] private PlayerController playerController;
         [SerializeField] private TaskManager taskManager;
         [SerializeField]private UIManager.UIManager uiManager;
+        [SerializeField]private PlacementManager placementManager;
         
 
         private void Awake()
@@ -21,6 +23,8 @@ namespace Core
         {
             // InputManager'ı başlat
             inputManager.Initialize();
+            
+            placementManager.Initialize(inputManager);
 
             // PlayerController'ı başlat ve inputManager'ı ile birlikte initialize et
             playerController.Initialize(inputManager);
