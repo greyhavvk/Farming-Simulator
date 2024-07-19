@@ -7,9 +7,14 @@ namespace Core
     {
         private const int GameSceneIndex = 1;
 
-        public void OnStartMenuButtonClicked()
+        public void OnStartGameButtonClicked()
         {
             SceneManager.LoadScene(GameSceneIndex);
+        }
+        
+        public void OnQuitButtonClicked()
+        {
+            Application.Quit();
         }
     }
 }
