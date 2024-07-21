@@ -14,7 +14,7 @@ namespace Systems.PlacementSystem
         private GridModel _gridModel;
         private Vector3 _gridOrigin;
 
-        // Initialize method
+        // InitializeFarmingItemUI method
         public void Initialize()
         {
             _gridModel = new GridModel(rows, columns);

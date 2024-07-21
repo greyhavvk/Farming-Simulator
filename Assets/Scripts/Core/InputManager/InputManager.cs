@@ -2,7 +2,7 @@
 
 namespace Core.InputManager
 {
-    public class InputManager : MonoBehaviour, IPlayerInput, IPlacementInput
+    public class InputManager : MonoBehaviour, IPlayerInput, IPlacementInput,IInventoryUIInput
     {
         [SerializeField] private InputType.InputType mouseKeyboardInput;
         private InputType.InputType _inputType;
@@ -44,6 +44,11 @@ namespace Core.InputManager
             return _inputType.GetMouseYInput();
         }
 
+        public float GetScrollDelta()
+        {
+            return _inputType.GetScrollDelta();
+        }
+
         public bool PlacementConfirmedButtonDown()
         {
             return _inputType.IsPlacementConfirmed();
@@ -57,6 +62,11 @@ namespace Core.InputManager
         public bool RotateButtonDown()
         {
             return _inputType.RotateButtonDown();
+        }
+
+        public Vector3 GetScreenFollowerPosition()
+        {
+            return ConfirmedPosition();
         }
     }
 }

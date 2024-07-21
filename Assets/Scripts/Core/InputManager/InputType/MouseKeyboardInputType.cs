@@ -44,5 +44,10 @@ namespace Core.InputManager.InputType
         {
             return Input.GetMouseButtonDown(1);
         }
+
+        public override float GetScrollDelta()
+        {
+            return Input.mouseScrollDelta.y;
+        }
     }
 }

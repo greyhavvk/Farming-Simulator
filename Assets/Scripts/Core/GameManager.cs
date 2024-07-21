@@ -1,3 +1,5 @@
+using System;
+using Systems.InventorySystem;
 using Systems.PlacementSystem;
 using Systems.PlayerSystem;
 using Systems.TaskSystem;
@@ -10,13 +12,19 @@ namespace Core
         [SerializeField] private InputManager.InputManager inputManager;
         [SerializeField] private PlayerController playerController;
         [SerializeField] private TaskManager taskManager;
-        [SerializeField]private UIManager.UIManager uiManager;
-        [SerializeField]private PlacementManager placementManager;
-        
+        [SerializeField] private UIManager.UIManager uiManager;
+        [SerializeField] private PlacementManager placementManager;
+        [SerializeField] private InventoryController inventoryController;
 
         private void Awake()
         {
             InitializeComponents();
+            SetListeners();
+        }
+
+        private void OnDisable()
+        {
+            ClearListeners();
         }
 
         private void InitializeComponents()
@@ -24,15 +32,46 @@ namespace Core
             // InputManager'ı başlat
             inputManager.Initialize();
             
+            uiManager.Initialize(RefreshInventory, DropItemFromInventory, FillItemStackFromAnother, inputManager);
+            
+            inventoryController.Initialize(uiManager);
+            
             placementManager.Initialize(inputManager);
 
             // PlayerController'ı başlat ve inputManager'ı ile birlikte initialize et
-            playerController.Initialize(inputManager);
+            playerController.Initialize(inputManager,uiManager, inventoryController.TryAddItem);
             
             taskManager.Initialize(uiManager, SetTaskListener, ClearTaskListeners);
+            
+        }
+
+        private void SetListeners()
+        {
         }
         
-        public void ClearTaskListeners()
+        private void ClearListeners()
+        {
+            
+        }
+
+        public void FillItemStackFromAnother(InventoryItemData target, InventoryItemData filler)
+        {
+            inventoryController.FillItemStackFromAnother(target, filler);
+        }
+
+        private void DropItemFromInventory(InventoryItemData itemData)
+        {
+            inventoryController.DropItemFromInventory(itemData);
+            playerController.RemoveItemFromHotBar(itemData);
+        }
+
+        private void RefreshInventory()
+        {
+            inventoryController.RefreshInventory();
+            playerController.RefreshHotBar();
+        }
+        
+        private void ClearTaskListeners()
         {
             playerController.ClearTaskListeners();
         }

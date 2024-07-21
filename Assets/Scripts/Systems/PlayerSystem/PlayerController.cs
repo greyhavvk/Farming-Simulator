@@ -1,6 +1,9 @@
 ﻿using System;
 using Core;
 using Core.InputManager;
+using Core.Player;
+using Core.UIManager;
+using Systems.InventorySystem;
 using Systems.TaskSystem;
 using UnityEngine;
 
@@ -12,14 +15,18 @@ namespace Systems.PlayerSystem
         [SerializeField] private PlayerInteraction interaction;
         [SerializeField] private PlayerLookAround lookAround;
         [SerializeField] private PlayerSettings playerSettings; // PlayerSettings'i ekledik
-
+        [SerializeField] private PlayerHoldingItemHandler holdingItemHandler;
+        [SerializeField] private PlayerHotBarHandler hotBarHandler;
+        [SerializeField] private PlayerDetectionHandler detectionHandler;
         private IPlayerInput _playerInput;
 
-        public void Initialize(IPlayerInput playerInput)
+        public void Initialize(IPlayerInput playerInput, IInventoryUI inventoryUI, Action<GameObject> onDropItemDetected)
         {
+            detectionHandler.Initialize(onDropItemDetected);
             _playerInput = playerInput;
             lookAround.Initialize(playerSettings.TurnSensitivity); // PlayerSettings'ten dönme sensitivity'i alarak initialize ettik
             movement.Initialize(playerSettings.MoveSpeed); // PlayerSettings'ten hareket hızını alarak initialize ettik
+            hotBarHandler.Initialize(inventoryUI);
         }
 
         private void Update()
@@ -40,6 +47,8 @@ namespace Systems.PlayerSystem
             HandleInteraction();
 
             HandleLookAround();
+
+            HandleItemSelectScroll();
         }
 
         private void HandleLookAround()
@@ -73,6 +82,24 @@ namespace Systems.PlayerSystem
         public void ClearTaskListeners()
         {
             movement._onUpdateTaskProgress =null;
+        }
+
+        //TODO hotbar ayarlanacak.
+        public void RefreshHotBar()
+        {
+            hotBarHandler.RefreshHotBar();
+        }
+
+        public void RemoveItemFromHotBar(InventoryItemData itemData)
+        {
+            hotBarHandler.RemoveItemFromHotBar(itemData);
+        }
+        
+        private void HandleItemSelectScroll()
+        {
+            var scrollDelta = _playerInput.GetScrollDelta();
+            
+                hotBarHandler.HandleItemSelectScroll(scrollDelta);
         }
     }
 }

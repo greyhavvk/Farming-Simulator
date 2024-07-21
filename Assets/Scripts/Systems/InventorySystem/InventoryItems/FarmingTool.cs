@@ -2,7 +2,7 @@
 
 namespace Systems.InventorySystem
 {
-    public class FarmingItem : MonoBehaviour
+    public class FarmingTool : FarmingItem
     {
         
     }

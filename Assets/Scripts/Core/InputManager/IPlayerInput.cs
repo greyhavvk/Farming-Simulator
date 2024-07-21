@@ -7,5 +7,6 @@
         bool IsInteractButtonPressed();
         float GetMouseXInput();
         float GetMouseYInput();
+        float GetScrollDelta();
     }
 }

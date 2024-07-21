@@ -14,5 +14,7 @@ namespace Core.InputManager.InputType
         public abstract Vector3 ConfirmedPosition();
 
         public abstract bool RotateButtonDown();
+
+        public abstract float GetScrollDelta();
     }
 }
