@@ -12,10 +12,12 @@ namespace Core.UIManager
     public class InventoryUIPanel : MonoBehaviour, IInventoryUI
     {
         [SerializeField] private FarmingItemUI refFarmingItemUI;
+        [SerializeField] private HotBarItemUI refHotBarItemUI;
         [SerializeField] private List<FarmingItemUI> existingFarmingItemUIs;
         [SerializeField] private List<HotBarItemUI> existingHotBarItemUIs;
         [SerializeField] private DropItemContainerPanel dropItemContainerPanel;
         [SerializeField] private Transform farmingItemUIParent;
+        [SerializeField] private Transform hotBarItemUIParent;
         [SerializeField] private GameObject inventoryUIPanel;
         [SerializeField] private Image holdingCursor;
         [SerializeField] private Image holdingItemImage;
@@ -40,7 +42,6 @@ namespace Core.UIManager
             _onRefreshRequested = onRefreshInventoryRequested;
             _panelInitialScale = inventoryUIPanel.transform.localScale;
             inventoryUIPanel.transform.localScale = Vector3.zero;
-            Cursor.lockState = CursorLockMode.Locked;
             _cursorInitialPos = holdingCursor.transform.position;
         }
 
@@ -196,8 +197,8 @@ namespace Core.UIManager
         {
             for (int i = 0; i < hotBarSize; i++)
             {
-                GameObject newFarmingItemUI = Instantiate(refFarmingItemUI.gameObject, farmingItemUIParent);
-                var item = newFarmingItemUI.GetComponent<HotBarItemUI>();
+                GameObject newHotBarItem = Instantiate(refHotBarItemUI.gameObject, hotBarItemUIParent);
+                var item = newHotBarItem.GetComponent<HotBarItemUI>();
                 existingHotBarItemUIs.Add(item);
                 item.InitializeHotBarItemUI(FarmingItemPlacedToHotBar,hotBarButtonClicked, i);
             }

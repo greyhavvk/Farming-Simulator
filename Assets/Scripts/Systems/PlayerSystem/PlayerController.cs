@@ -83,8 +83,7 @@ namespace Systems.PlayerSystem
         {
             movement._onUpdateTaskProgress =null;
         }
-
-        //TODO hotbar ayarlanacak.
+        
         public void RefreshHotBar()
         {
             hotBarHandler.RefreshHotBar();

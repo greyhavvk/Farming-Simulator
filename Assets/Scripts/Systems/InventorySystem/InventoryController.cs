@@ -32,14 +32,12 @@ namespace Systems.InventorySystem
         {
             UpdateInventoryUI();
             _inventoryUI.OpenInventoryPanel();
-            Cursor.lockState = CursorLockMode.Confined;
         }
 
         public void CloseInventory()
         {
             UpdateItemList();
             _inventoryUI.CloseInventoryPanel();
-            Cursor.lockState = CursorLockMode.Locked;
         }
 
         public void RefreshInventory()

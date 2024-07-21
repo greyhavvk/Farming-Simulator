@@ -23,7 +23,6 @@ namespace Systems.InventorySystem
 
         public void Drop(Vector3 dropCenter)
         {
-            //TODO drop işlemleri yapılacak.
             dropItemCollider.enabled = false;
             float angle = Random.Range(0, 2 * Mathf.PI);
             float radius = Random.Range(_minRadius, _maxRadius);
