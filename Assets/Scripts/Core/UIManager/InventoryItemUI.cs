@@ -1,4 +1,6 @@
 ﻿using Systems.InventorySystem;
+using Systems.InventorySystem.InventoryItems;
+using Systems.InventorySystem.InventoryItems.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +9,7 @@ namespace Core.UIManager
     public class InventoryItemUI : InteractablePanel
     {
         [SerializeField] protected Image itemImage;
-        protected InventoryItemData inventoryItemData;
+        protected FarmingItemData farmingItemData;
         protected override void OnClick(ActionType actionType)
         {
             switch (actionType)
@@ -39,14 +41,14 @@ namespace Core.UIManager
             itemImage.CrossFadeAlpha(0.3f, 0.05f, true);
         }
         
-        public InventoryItemData GetInventoryItemData()
+        public FarmingItemData GetInventoryItemData()
         {
-            return inventoryItemData;
+            return farmingItemData;
         }
         
-        public void SetInventoryItemData(InventoryItemData farmingItemData)
+        public void SetInventoryItemData(FarmingItemData farmingItemData)
         {
-            inventoryItemData = farmingItemData;
+            this.farmingItemData = farmingItemData;
         }
     }
 }

@@ -1,23 +1,24 @@
 ﻿using Systems.FinanceSystem;
+using Systems.InventorySystem.InventoryItems.Data;
 using UnityEngine;
 
-namespace Systems.InventorySystem
+namespace Systems.InventorySystem.InventoryItems
 {
-    public class FarmingItem : MonoBehaviour, IFarmingItem
+    public class FarmingItem : IFarmingItem
     {
-        [SerializeField] private FarmingItemData farmingItemData;
-        [SerializeField] private ItemFinanceData financeData;
-        [SerializeField] private int dropItemIndex;
-        public FarmingItemData FarmingItemData
+        public FarmingItem(FarmingItemData farmingItemData, ItemFinanceData itemFinanceData, int itemIndexID, Sprite icon)
         {
-            get
-            {
-                farmingItemData.FarmingItem = this;
-                return farmingItemData;
-            }
+            FarmingItemData = farmingItemData;
+            ItemFinanceData = itemFinanceData;
+            ItemIndexID = itemIndexID;
+            Icon = icon;
         }
 
-        public ItemFinanceData ItemFinanceData => financeData;
-        public int DropItemIndex => dropItemIndex;
+        public FarmingItemData FarmingItemData { get; }
+        public ItemFinanceData ItemFinanceData { get; }
+        public int ItemIndexID { get; }
+        public Sprite Icon { get; }
+        
+        
     }
 }

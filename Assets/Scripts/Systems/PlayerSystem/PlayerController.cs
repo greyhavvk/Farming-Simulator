@@ -3,7 +3,8 @@ using Core;
 using Core.InputManager;
 using Core.Player;
 using Core.UIManager;
-using Systems.InventorySystem;
+using Systems.FarmingSystems;
+using Systems.InventorySystem.InventoryItems.Data;
 using Systems.TaskSystem;
 using UnityEngine;
 
@@ -20,13 +21,25 @@ namespace Systems.PlayerSystem
         [SerializeField] private PlayerDetectionHandler detectionHandler;
         private IPlayerInput _playerInput;
 
-        public void Initialize(IPlayerInput playerInput, IInventoryUI inventoryUI, Action<GameObject> onDropItemDetected)
+        public void Initialize(IPlayerInput playerInput, IInventoryUI inventoryUI, Action<GameObject> onDropItemDetected, IInteractedField interactedField, Action onMarketInteracted)
         {
+            interaction.Initialize(FieldInteracted, InteractingTried, onMarketInteracted);
             detectionHandler.Initialize(onDropItemDetected);
             _playerInput = playerInput;
             lookAround.Initialize(playerSettings.TurnSensitivity); // PlayerSettings'ten dönme sensitivity'i alarak initialize ettik
             movement.Initialize(playerSettings.MoveSpeed); // PlayerSettings'ten hareket hızını alarak initialize ettik
-            hotBarHandler.Initialize(inventoryUI);
+            hotBarHandler.Initialize(inventoryUI, holdingItemHandler.SetHoldingItem);
+            holdingItemHandler.Initialize(interactedField);
+        }
+
+        private void InteractingTried()
+        {
+            holdingItemHandler.InteractingTriedAnimation();
+        }
+
+        private void FieldInteracted(GameObject obj)
+        {
+            holdingItemHandler.FieldInteracted(obj);
         }
 
         private void Update()
@@ -60,10 +73,7 @@ namespace Systems.PlayerSystem
 
         private void HandleInteraction()
         {
-            if (_playerInput.IsInteractButtonPressed())
-            {
-                interaction.HandleInteraction();
-            }
+           interaction.HandleInteraction(_playerInput);
         }
 
         private void HandleMovement()
@@ -89,7 +99,7 @@ namespace Systems.PlayerSystem
             hotBarHandler.RefreshHotBar();
         }
 
-        public void RemoveItemFromHotBar(InventoryItemData itemData)
+        public void RemoveItemFromHotBar(FarmingItemData itemData)
         {
             hotBarHandler.RemoveItemFromHotBar(itemData);
         }

@@ -2,14 +2,13 @@
 
 namespace Core.InputManager
 {
-    public class InputManager : MonoBehaviour, IPlayerInput, IPlacementInput,IInventoryUIInput
+    public class InputManager : MonoBehaviour, IPlayerInput, IPlacementInput,IInventoryUIInput, IInventoryInput
     {
         [SerializeField] private InputType.InputType mouseKeyboardInput;
         private InputType.InputType _inputType;
 
         public void Initialize()
-        {
-            //TODO gerekli ayarlamalar halledilecek.
+        { //TODO farklı inputlar için gerekli ayarlamalar halledilecek.
             // Varsayılan olarak UnityInputType kullanılacak
             _inputType =mouseKeyboardInput;
         }
@@ -32,6 +31,10 @@ namespace Core.InputManager
         public bool IsInteractButtonPressed()
         {
             return _inputType.IsInteractButtonPressed();
+        }
+        public bool IsInteractButtonPressedUp()
+        {
+            return _inputType.IsInteractButtonPressedUp();
         }
 
         public float GetMouseXInput()
@@ -67,6 +70,11 @@ namespace Core.InputManager
         public Vector3 GetScreenFollowerPosition()
         {
             return ConfirmedPosition();
+        }
+
+        public bool GetInventoryUITriggerInput()
+        {
+            return _inputType.GetInventoryUITriggerInput();
         }
     }
 }

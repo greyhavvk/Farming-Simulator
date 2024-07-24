@@ -4,6 +4,7 @@
     {
         float GetHorizontalInput();
         float GetVerticalInput();
+        bool IsInteractButtonPressedUp();
         bool IsInteractButtonPressed();
         float GetMouseXInput();
         float GetMouseYInput();

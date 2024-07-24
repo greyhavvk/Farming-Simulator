@@ -1,20 +1,26 @@
-﻿using Systems.FarmingSystems;
+﻿using Systems.FinanceSystem;
+using Systems.InventorySystem.InventoryItems.Data;
 using UnityEngine;
 
-namespace Systems.InventorySystem
+namespace Systems.InventorySystem.InventoryItems
 {
     public class StackableFarmingItem : FarmingItem
     {
-        [SerializeField] private int maxStackCount;
+        private readonly int _maxStackCount;
         private int _currentStackCount=0;
 
-        public int EmptyCount => maxStackCount - _currentStackCount;
+        public int EmptyCount => _maxStackCount - _currentStackCount;
         public int CurrentStackCount => _currentStackCount;
 
         public void SetStackCount(int stackCount)
         {
-            _currentStackCount = Mathf.Clamp(stackCount,0,maxStackCount);
+            _currentStackCount = Mathf.Clamp(stackCount,0,_maxStackCount);
         }
 
+        public StackableFarmingItem(FarmingItemData farmingItemData, ItemFinanceData itemFinanceData, 
+            int itemIndexID, Sprite icon, int maxStackCount) : base(farmingItemData, itemFinanceData, itemIndexID, icon)
+        {
+            _maxStackCount = maxStackCount;
+        }
     }
 }

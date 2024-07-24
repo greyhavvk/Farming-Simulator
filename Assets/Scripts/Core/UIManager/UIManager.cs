@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Core.InputManager;
 using Systems.FarmingSystems;
 using Systems.InventorySystem;
+using Systems.InventorySystem.InventoryItems;
+using Systems.InventorySystem.InventoryItems.Data;
 using UnityEngine;
 
 namespace Core.UIManager
@@ -13,7 +15,7 @@ namespace Core.UIManager
         [SerializeField] private GameObject moveTaskUIPanel;
         [SerializeField] private InventoryUIPanel inventoryUIPanel;
 
-        public void Initialize(Action onRefreshInventoryRequested,Action<InventoryItemData> onDropItemFromInventory, Action<InventoryItemData, InventoryItemData> onFillStackFromAnother, IInventoryUIInput inventoryUIInput)
+        public void Initialize(Action onRefreshInventoryRequested,Action<FarmingItemData> onDropItemFromInventory, Action<FarmingItemData, FarmingItemData> onFillStackFromAnother, IInventoryUIInput inventoryUIInput)
         {
             inventoryUIPanel.Initialize(onRefreshInventoryRequested, onDropItemFromInventory,onFillStackFromAnother, inventoryUIInput);
         }
@@ -35,16 +37,16 @@ namespace Core.UIManager
             moveTaskUIPanel.SetActive(false);
         }
 
-        public void SetInventoryList(List<InventoryItemData> itemDatas)
+        public void SetInventoryList(List<FarmingItemData> itemDatas)
         {
             inventoryUIPanel.SetInventoryList(itemDatas);
         }
 
-        public void SetHotBarList(List<InventoryItemData> hotBarList)
+        public void SetHotBarList(List<FarmingItemData> hotBarList)
         {
             inventoryUIPanel.SetInventoryList(hotBarList);        }
 
-        public List<InventoryItemData> CalculateNewHotBarItemList()
+        public List<FarmingItemData> CalculateNewHotBarItemList()
         {
             return inventoryUIPanel.CalculateNewHotBarItemList();
         }
@@ -82,7 +84,7 @@ namespace Core.UIManager
             
         }
 
-        public List<InventoryItemData> CalculateNewFarmingItemList()
+        public List<FarmingItemData> CalculateNewFarmingItemList()
         {
             return inventoryUIPanel.CalculateNewFarmingItemList();
         }

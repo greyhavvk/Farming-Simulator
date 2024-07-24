@@ -17,7 +17,17 @@ namespace Core.InputManager.InputType
 
         public override bool IsInteractButtonPressed()
         {
-            return Input.GetKeyDown(KeyCode.E);
+            return Input.GetMouseButton(0);
+        }
+        
+        public override bool IsInteractButtonPressedUp()
+        {
+            return Input.GetMouseButtonUp(0);
+        }
+
+        public override bool GetInventoryUITriggerInput()
+        {
+            return Input.GetKeyDown(KeyCode.Tab);
         }
 
         public override float GetMouseXInput()

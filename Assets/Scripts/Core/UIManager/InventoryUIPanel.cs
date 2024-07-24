@@ -4,6 +4,8 @@ using System.Linq;
 using Core.InputManager;
 using DG.Tweening;
 using Systems.InventorySystem;
+using Systems.InventorySystem.InventoryItems;
+using Systems.InventorySystem.InventoryItems.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,18 +24,18 @@ namespace Core.UIManager
         [SerializeField] private Image holdingCursor;
         [SerializeField] private Image holdingItemImage;
 
-        private InventoryItemData _holdingItemData;
+        private FarmingItemData _holdingItemData;
         private FarmingItemUI _originOfHoldingData;
         private Vector2 _cursorInitialPos;
         private Vector3 _panelInitialScale;
         private Action _onRefreshRequested;
-        private Action<InventoryItemData> _onItemDroppedInventory;
-        private Action<InventoryItemData, InventoryItemData> _onFillStackFromAnother;
+        private Action<FarmingItemData> _onItemDroppedInventory;
+        private Action<FarmingItemData, FarmingItemData> _onFillStackFromAnother;
         private IInventoryUIInput _inventoryUIInput;
 
         private const float AnimationTime = .5f;
 
-        public void Initialize(Action onRefreshInventoryRequested,Action<InventoryItemData> onItemDroppedInventory,Action<InventoryItemData, InventoryItemData> onFillStackFromAnother, IInventoryUIInput inventoryUIInput)
+        public void Initialize(Action onRefreshInventoryRequested,Action<FarmingItemData> onItemDroppedInventory,Action<FarmingItemData, FarmingItemData> onFillStackFromAnother, IInventoryUIInput inventoryUIInput)
         {
             _onFillStackFromAnother = onFillStackFromAnother;
             _onItemDroppedInventory = onItemDroppedInventory;
@@ -63,7 +65,7 @@ namespace Core.UIManager
             }
         }
 
-        private void SetHoldingItem(InventoryItemData farmingItemData, FarmingItemUI panel)
+        private void SetHoldingItem(FarmingItemData farmingItemData, FarmingItemUI panel)
         {
             _holdingItemData = farmingItemData;
             _originOfHoldingData = panel;
@@ -73,7 +75,7 @@ namespace Core.UIManager
         private void UpdateVisual()
         {
             bool itemDataIsEmpty = _holdingItemData != null;
-            holdingItemImage.sprite = itemDataIsEmpty ? _holdingItemData.Icon : null;
+            holdingItemImage.sprite = itemDataIsEmpty ? _holdingItemData.FarmingItem.Icon : null;
             holdingItemImage.gameObject.SetActive(itemDataIsEmpty);
         }
 
@@ -90,7 +92,7 @@ namespace Core.UIManager
 
             if (panel.GetInventoryItemData() is FarmingItemData farmingItemData && _holdingItemData is FarmingItemData holdingFarmingItemData)
             {
-                if (farmingItemData.FarmingItem is Seed seed && holdingFarmingItemData.FarmingItem is Seed holdingSeed)
+                if (farmingItemData.FarmingItem is SeedFarmingItem seed && holdingFarmingItemData.FarmingItem is SeedFarmingItem holdingSeed)
                 {
                     if (seed.PlantType == holdingSeed.PlantType)
                     {
@@ -99,7 +101,7 @@ namespace Core.UIManager
                         return;
                     }
                 }
-                else if (farmingItemData.FarmingItem is Harvest harvest && holdingFarmingItemData.FarmingItem is Seed holdingHarvest)
+                else if (farmingItemData.FarmingItem is HarvestProductFarmingItem harvest && holdingFarmingItemData.FarmingItem is SeedFarmingItem holdingHarvest)
                 {
                     if (harvest.PlantType == holdingHarvest.PlantType)
                     {
@@ -162,7 +164,7 @@ namespace Core.UIManager
             ClearHoldingItem();
         }
 
-        public void SetInventoryList(List<InventoryItemData> itemDatas)
+        public void SetInventoryList(List<FarmingItemData> itemDatas)
         {
             for (int i = 0; i < existingFarmingItemUIs.Count; i++)
             {
@@ -172,7 +174,7 @@ namespace Core.UIManager
             }
         }
 
-        public void SetHotBarList(List<InventoryItemData> hotBarList)
+        public void SetHotBarList(List<FarmingItemData> hotBarList)
         {
             for (int i = 0; i < existingHotBarItemUIs.Count; i++)
             {
@@ -212,7 +214,7 @@ namespace Core.UIManager
             }
         }
 
-        private void FarmingItemUIPointerDown(InventoryItemData farmingItemData, FarmingItemUI holdToFarmingItemUI)
+        private void FarmingItemUIPointerDown(FarmingItemData farmingItemData, FarmingItemUI holdToFarmingItemUI)
         {
             if (!IsThereAnyHoldingItem())
             {
@@ -283,14 +285,14 @@ namespace Core.UIManager
         private IEnumerable<FarmingItemUI> GetExistingFarmingItemUIs() => existingFarmingItemUIs;
         private IEnumerable<HotBarItemUI> GetExistingHotBarItemUIs() => existingHotBarItemUIs;
 
-        public List<InventoryItemData> CalculateNewFarmingItemList()
+        public List<FarmingItemData> CalculateNewFarmingItemList()
         {
             return GetExistingFarmingItemUIs()
                 .Select(t => t.GetInventoryItemData())
                 .ToList();
         }
         
-        public List<InventoryItemData> CalculateNewHotBarItemList()
+        public List<FarmingItemData> CalculateNewHotBarItemList()
         {
             return GetExistingHotBarItemUIs()
                 .Select(t => t.GetInventoryItemData())

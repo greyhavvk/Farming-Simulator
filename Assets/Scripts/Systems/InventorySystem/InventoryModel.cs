@@ -1,10 +1,13 @@
-﻿namespace Systems.InventorySystem
+﻿using Systems.InventorySystem.InventoryItems;
+using Systems.InventorySystem.InventoryItems.Data;
+
+namespace Systems.InventorySystem
 {
     public class InventoryModel
     {
-        private InventoryItemData[] _items;
+        private FarmingItemData[] _items;
 
-        public InventoryModel(InventoryItemData[] items)
+        public InventoryModel(FarmingItemData[] items)
         {
             _items = items;
         }
@@ -48,8 +51,8 @@
         {
             return existingItem switch
             {
-                Seed existingSeed when newItem is Seed newSeed => existingSeed.PlantType == newSeed.PlantType,
-                Harvest existingHarvest when newItem is Harvest newHarvest => existingHarvest.PlantType ==
+                SeedFarmingItem existingSeed when newItem is SeedFarmingItem newSeed => existingSeed.PlantType == newSeed.PlantType,
+                HarvestProductFarmingItem existingHarvest when newItem is HarvestProductFarmingItem newHarvest => existingHarvest.PlantType ==
                                                                               newHarvest.PlantType,
                 _ => false
             };
@@ -83,12 +86,21 @@
             return false;
         }
 
-        public void FillItemStackFromAnother(InventoryItemData targetItem, InventoryItemData fillerItem)
+        public void ReduceStackableItemFromSeedStack(StackableFarmingItem stackableFarmingItem, int reduceCount)
         {
-            var targetStackableItem = (targetItem as FarmingItemData)?.FarmingItem as StackableFarmingItem;
-            var fillerStackableItem =  (fillerItem as FarmingItemData)?.FarmingItem as StackableFarmingItem;
+            stackableFarmingItem.SetStackCount(stackableFarmingItem.CurrentStackCount-reduceCount);
+            
+            if (IsEmpty(stackableFarmingItem))
+            {
+                RemoveItemFromInventory(stackableFarmingItem.FarmingItemData);
+            }
+        }
 
-            if (targetStackableItem != null)
+        public void FillItemStackFromAnother(FarmingItemData targetItem, FarmingItemData fillerItem)
+        {
+            var fillerStackableItem =  fillerItem?.FarmingItem as StackableFarmingItem;
+
+            if (targetItem?.FarmingItem is StackableFarmingItem targetStackableItem)
             {
                 TransferStack(targetStackableItem, fillerStackableItem);
             }
@@ -119,7 +131,7 @@
             return stackableItem != null && stackableItem.CurrentStackCount == 0;
         }
 
-        private void RemoveItemFromInventory(InventoryItemData itemData)
+        private void RemoveItemFromInventory(FarmingItemData itemData)
         {
             for (int i = 0; i < _items.Length; i++)
             {

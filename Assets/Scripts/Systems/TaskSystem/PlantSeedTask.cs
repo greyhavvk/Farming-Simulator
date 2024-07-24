@@ -13,7 +13,7 @@ namespace Systems.TaskSystem
         [SerializeField] private int requiredSeedsPlanted;
         [SerializeField] private int currentSeedsPlanted;
 
-        private const string TaskTypeText = "Plant ";
+        private const string TaskTypeText = "PlantVisual ";
 
         public override void UpdateTaskProgress(TaskData taskData)
         {

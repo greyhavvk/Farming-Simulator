@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using Core.UIManager;
-using Systems.InventorySystem;
+using Systems.InventorySystem.InventoryItems.Data;
 using UnityEngine;
 
 namespace Systems.PlayerSystem
@@ -9,17 +9,18 @@ namespace Systems.PlayerSystem
     public class PlayerHotBarHandler : MonoBehaviour
     {
         [SerializeField] private int hotBarSize;
-        private InventoryItemData[] _itemDatas;
+        private FarmingItemData[] _itemDatas;
         private int _currentSelectedItemIndex;
         private IInventoryUI _inventoryUI;
-
+        private Action<FarmingItemData> _onItemSelectedFromHotBar;
         private int _scrollCounter;
         private const int ScrollThreshold = 5; // Her 5 kaydırma hareketinde bir tetikleme
 
-        public void Initialize(IInventoryUI inventoryUI)
+        public void Initialize(IInventoryUI inventoryUI, Action<FarmingItemData> onItemSelectedFromHotBar)
         {
+            _onItemSelectedFromHotBar = onItemSelectedFromHotBar;
             _inventoryUI = inventoryUI;
-            _itemDatas = new InventoryItemData[hotBarSize];
+            _itemDatas = new FarmingItemData[hotBarSize];
             _currentSelectedItemIndex = 0;
             _scrollCounter = 0;
 
@@ -35,7 +36,7 @@ namespace Systems.PlayerSystem
             _inventoryUI.RefreshInventory();
         }
 
-        public void RemoveItemFromHotBar(InventoryItemData itemData)
+        public void RemoveItemFromHotBar(FarmingItemData itemData)
         {
             for (int i = 0; i < _itemDatas.Length; i++)
             {
@@ -52,10 +53,10 @@ namespace Systems.PlayerSystem
         {
             _currentSelectedItemIndex = hotBarIndex;
             _inventoryUI.ItemSelectedFromHotBar(_currentSelectedItemIndex);
-            // TODO: SEÇİLEN ITEM İÇİN İŞLEMLERİ BURADA YAPIN.
+            _onItemSelectedFromHotBar?.Invoke(_itemDatas[_currentSelectedItemIndex]);
         }
-
-        public void SelectItemFromIndexAdder(int indexAdder)
+        
+        private void SelectItemFromIndexAdder(int indexAdder)
         {
             _currentSelectedItemIndex += indexAdder;
             if (_currentSelectedItemIndex < 0)

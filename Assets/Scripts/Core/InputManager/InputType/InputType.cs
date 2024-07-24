@@ -16,5 +16,9 @@ namespace Core.InputManager.InputType
         public abstract bool RotateButtonDown();
 
         public abstract float GetScrollDelta();
+
+        public abstract bool IsInteractButtonPressedUp();
+
+        public abstract bool GetInventoryUITriggerInput();
     }
 }

@@ -1,14 +1,16 @@
 ﻿using System;
 using Systems.InventorySystem;
+using Systems.InventorySystem.InventoryItems;
+using Systems.InventorySystem.InventoryItems.Data;
 
 namespace Core.UIManager
 {
     public class FarmingItemUI : InventoryItemUI
     {
-        private Action<InventoryItemData, FarmingItemUI> _onFarmingItemUIPointerDown;
+        private Action<FarmingItemData, FarmingItemUI> _onFarmingItemUIPointerDown;
         private Action<FarmingItemUI> _onFarmingItemUIPointerUp;
 
-        public void InitializeFarmingItemUI(Action<InventoryItemData, FarmingItemUI> onFarmingItemUIPointerDown,
+        public void InitializeFarmingItemUI(Action<FarmingItemData, FarmingItemUI> onFarmingItemUIPointerDown,
             Action<FarmingItemUI> onFarmingItemUIPointerUp)
         {
             _onFarmingItemUIPointerDown = onFarmingItemUIPointerDown;
@@ -18,10 +20,10 @@ namespace Core.UIManager
         //TODO buranın ayara ihtiyacı var.
         public override void SetVisual()
         {
-            if (inventoryItemData!=null)
+            if (farmingItemData!=null)
             {
                 itemImage.gameObject.SetActive(true);
-                itemImage.sprite = inventoryItemData.Icon;
+                itemImage.sprite = farmingItemData.FarmingItem.Icon;
                 itemImage.CrossFadeAlpha(1f, 0.05f, true);
             }
             else
@@ -37,7 +39,7 @@ namespace Core.UIManager
 
         protected override void PointerDownTriggered()
         {
-            _onFarmingItemUIPointerDown?.Invoke(inventoryItemData, this);
+            _onFarmingItemUIPointerDown?.Invoke(farmingItemData, this);
         }
     }
 }

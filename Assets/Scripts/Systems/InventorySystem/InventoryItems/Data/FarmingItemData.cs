@@ -1,10 +1,9 @@
 ﻿using System;
-using UnityEngine;
 
-namespace Systems.InventorySystem
+namespace Systems.InventorySystem.InventoryItems.Data
 {
     [Serializable]
-    public class FarmingItemData:InventoryItemData
+    public class FarmingItemData
     {
         public IFarmingItem FarmingItem { get; set; }
     }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Core.ObjectPool;
 using DG.Tweening;
+using Systems.InventorySystem.InventoryItems;
 using TMPro;
 using UnityEngine;
 
@@ -60,16 +61,22 @@ namespace Systems.InventorySystem
 
             for (int i = 0; i < dropItemVisuals.Count; i++)
             {
-                dropItemVisuals[i].SetActive(i==_farmingItem.DropItemIndex);
+                dropItemVisuals[i].SetActive(i==_farmingItem.ItemIndexID);
             }
             
             StackableFarmingItem stackableFarmingItem=_farmingItem as StackableFarmingItem;
-            if (stackableFarmingItem)
+            if (stackableFarmingItem!=null)
             {
                 stackText.text = stackableFarmingItem.CurrentStackCount.ToString();
             }
-            stackText.gameObject.SetActive(stackableFarmingItem);
+            stackText.gameObject.SetActive(stackableFarmingItem!=null);
 
+        }
+
+        public void Spawn(Vector3 position)
+        {
+            transform.position = position;
+            dropItemCollider.enabled = true;
         }
     }
 }

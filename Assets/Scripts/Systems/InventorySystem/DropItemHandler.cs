@@ -1,12 +1,13 @@
 ﻿using Core.ObjectPool;
+using Systems.InventorySystem.InventoryItems.Data;
 using UnityEngine;
 
 namespace Systems.InventorySystem
 {
     public class DropItemHandler
     {
-        private ObjectPool _dropItemPool;
-        private Transform _dropCenterTransform;
+        private readonly ObjectPool _dropItemPool;
+        private readonly Transform _dropCenterTransform;
 
         public DropItemHandler(ObjectPool dropItemPool, Transform dropCenterTransform)
         {
@@ -33,12 +34,24 @@ namespace Systems.InventorySystem
             }
         }
 
-        public void DropItemFromInventory(InventoryItemData itemData)
+        public void DropItemFromInventory(FarmingItemData itemData)
         {
-            var dropItem = _dropItemPool.GetEntity() as DropItem;
-            if (dropItem == null) return;
-            dropItem.UpdateFarmingItem((itemData as FarmingItemData)?.FarmingItem);
+            if (GetDropItem(itemData, out var dropItem)) return;
             dropItem.Drop(_dropCenterTransform.position);
+        }
+
+        private bool GetDropItem(FarmingItemData itemData, out DropItem dropItem)
+        {
+            dropItem = _dropItemPool.GetEntity() as DropItem;
+            if (dropItem == null) return true;
+            dropItem.UpdateFarmingItem((itemData)?.FarmingItem);
+            return false;
+        }
+
+        public void InstanceItemFromPosition(FarmingItemData farmingItemData, Vector3 position)
+        {
+            if (GetDropItem(farmingItemData, out var dropItem)) return;
+            dropItem.Spawn(position);
         }
     }
 }

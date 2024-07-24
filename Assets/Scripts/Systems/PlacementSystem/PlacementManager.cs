@@ -1,4 +1,5 @@
 ﻿using Core.InputManager;
+using Systems.FarmingSystems;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ namespace Systems.PlacementSystem
         [SerializeField] private LayerMask groundLayerMask;
         [SerializeField] private float placeDistance;
         [SerializeField] private Camera placementCamera;
+        private IFieldAdded _fieldAdded;
         private IPlacementInput _placementInput;
 
         private PlaceableItem _currentItem;
@@ -19,35 +21,15 @@ namespace Systems.PlacementSystem
         private Ray _ray;
         private RaycastHit _hit;
 
-        public void Initialize(IPlacementInput placementInput)
+        public void Initialize(IPlacementInput placementInput, IFieldAdded fieldAdded)
         {
+            _fieldAdded = fieldAdded;
             _placementInput = placementInput;
             gridController.Initialize();
             enabled = false;
         }
-
-        public void StartPlacement(IPlaceableItem placeableItem)
-        {
-            if (_currentItem != null)
-            {
-                Destroy(_currentItem.Prefab);
-            }
-
-            var newPlaceableItem = Instantiate(placeableItem.Prefab);
-            _currentItem = newPlaceableItem.GetComponent<PlaceableItem>();
-
-            _currentPosition = Vector3.zero;
-
-            enabled = true;
-        }
-
-        [ContextMenu("Place")]
-        public void TestPlacement()
-        {
-            StartPlacement(testObject);
-        }
-
-        [ContextMenu("Cancel")]
+        
+        //TODO yerleştirme iptal tuşunu eklemeliyiz. ya da şimdilik boş veririm.
         public void CancelPlacement()
         {
             if (_currentItem)
@@ -118,6 +100,10 @@ namespace Systems.PlacementSystem
         {
             PlaceItem(_currentItem);
             _currentItem.Place(_currentPosition);
+            if (_currentItem.gameObject.CompareTag("Field"))
+            {
+                _fieldAdded.AddField(_currentItem.gameObject);
+            }
             _currentItem = null;
             enabled = false;
         }
@@ -130,7 +116,7 @@ namespace Systems.PlacementSystem
                 return Vector3.zero;
             }
 
-            _ray = placementCamera.ScreenPointToRay(Input.mousePosition);
+            _ray = placementCamera.ScreenPointToRay(_placementInput.ConfirmedPosition());
             if (Physics.Raycast(_ray, out _hit, placeDistance, groundLayerMask))
             {
                 cantFoundPosition = false;

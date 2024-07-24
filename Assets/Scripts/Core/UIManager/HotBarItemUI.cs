@@ -21,10 +21,10 @@ namespace Core.UIManager
         //TODO buranın ayara ihtiyacı var.
         public override void SetVisual()
         {
-            if (inventoryItemData!=null)
+            if (farmingItemData!=null)
             {
                 itemImage.gameObject.SetActive(true);
-                itemImage.sprite = inventoryItemData.Icon;
+                itemImage.sprite = farmingItemData.FarmingItem.Icon;
                 itemImage.CrossFadeAlpha(1f, 0.05f, true);
             }
             else
