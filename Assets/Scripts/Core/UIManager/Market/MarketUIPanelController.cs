@@ -67,7 +67,7 @@ namespace Core.UIManager.Market
 
         public void CloseMarket()
         {
-            marketUIPanelParent.SetActive(true);
+            marketUIPanelParent.SetActive(false);
         }
     }
 }

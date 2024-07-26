@@ -2,7 +2,7 @@
 
 namespace Core.InputManager
 {
-    public class InputManager : MonoBehaviour, IPlayerInput, IPlacementInput,IInventoryUIInput, IInventoryInput
+    public class InputManager : MonoBehaviour, IPlayerInput, IPlacementInput,IInventoryUIInput
     {
         [SerializeField] private InputType.InputType mouseKeyboardInput;
         private InputType.InputType _inputType;
@@ -52,6 +52,11 @@ namespace Core.InputManager
             return _inputType.GetScrollDelta();
         }
 
+        public bool IsInteractButtonPressedDown()
+        {
+            return _inputType.IsInteractButtonPressedDown();
+        }
+
         public bool PlacementConfirmedButtonDown()
         {
             return _inputType.IsPlacementConfirmed();
@@ -75,6 +80,11 @@ namespace Core.InputManager
         public bool GetInventoryUITriggerInput()
         {
             return _inputType.GetInventoryUITriggerInput();
+        }
+
+        public bool GetSettingUITriggerInput()
+        {
+            return _inputType.GetSettingUITriggerInput();
         }
     }
 }

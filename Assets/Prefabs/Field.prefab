@@ -515,7 +515,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.25, y: 0.5}
+  m_AnchoredPosition: {x: 0.285, y: 0.5}
   m_SizeDelta: {x: 1.5, y: 0.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3953309933665181871
@@ -580,7 +580,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -732,7 +732,6 @@ MonoBehaviour:
   - vector3List:
     - {x: 0, y: 0, z: 1}
     - {x: 1, y: 0, z: 1}
-  prefab: {fileID: 6367818268717064575}
   placeableMeshRenderers:
   - {fileID: 8443130217355902334}
 --- !u!65 &5585721871691324318

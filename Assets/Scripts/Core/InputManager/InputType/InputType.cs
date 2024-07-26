@@ -20,5 +20,9 @@ namespace Core.InputManager.InputType
         public abstract bool IsInteractButtonPressedUp();
 
         public abstract bool GetInventoryUITriggerInput();
+
+        public abstract bool IsInteractButtonPressedDown();
+
+        public abstract bool GetSettingUITriggerInput();
     }
 }

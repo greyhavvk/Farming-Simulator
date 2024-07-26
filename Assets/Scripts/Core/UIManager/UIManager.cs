@@ -18,13 +18,21 @@ namespace Core.UIManager
         [SerializeField] private InventoryUIPanel inventoryUIPanel;
         [SerializeField] private FinanceUIPanel financeUIPanel;
         [SerializeField] private MarketUIPanelController marketUIPanelController;
-        
-        public void Initialize(Action onRefreshInventoryRequested,Action<FarmingItemData> onDropItemFromInventory, Action<FarmingItemData, FarmingItemData> onFillStackFromAnother, IInventoryUIInput inventoryUIInput)
+        [SerializeField] private GameObject settingPanel;
+
+        public void Initialize(Action onRefreshInventoryRequested, Action<FarmingItemData> onDropItemFromInventory,
+            Action<FarmingItemData, FarmingItemData> onFillStackFromAnother, IInventoryUIInput inventoryUIInput)
         {
-            inventoryUIPanel.Initialize(onRefreshInventoryRequested, onDropItemFromInventory,onFillStackFromAnother, inventoryUIInput);
+            inventoryUIPanel.Initialize(onRefreshInventoryRequested, onDropItemFromInventory, onFillStackFromAnother,
+                inventoryUIInput);
             marketUIPanelController.Initialize();
         }
-        
+
+        private void OnDisable()
+        {
+            inventoryUIPanel.DisableListeners();
+        }
+
         public void UpdateMoveTaskUI()
         {
             moveTaskUIPanel.SetActive(true);
@@ -79,14 +87,14 @@ namespace Core.UIManager
 
         public void CloseInventoryPanel()
         {
-            inventoryUIPanel.CloseInventoryPanel();
             
+            inventoryUIPanel.CloseInventoryPanel();
         }
 
         public void OpenInventoryPanel()
         {
+           
             inventoryUIPanel.OpenInventoryPanel();
-            
         }
 
         public List<FarmingItemData> CalculateNewFarmingItemList()
@@ -116,12 +124,24 @@ namespace Core.UIManager
 
         public void OpenMarket()
         {
+            
             marketUIPanelController.OpenMarket();
         }
 
         public void CloseMarket()
         {
+           
             marketUIPanelController.CloseMarket();
+        }
+
+        public void OpenSettingPanel()
+        {
+            settingPanel.SetActive(true);
+        }
+        
+        public void CloseSettingPanel()
+        {
+            settingPanel.SetActive(false);
         }
     }
 }

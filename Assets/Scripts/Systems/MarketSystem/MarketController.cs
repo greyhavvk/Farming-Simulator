@@ -37,6 +37,14 @@ namespace Systems.MarketSystem
             _itemsForSell = new Dictionary<Product, FarmingItemData>();
         }
 
+        private void OnDisable()
+        {
+            _onItemSold = null;
+            _onBuildingBought = null;
+            _onItemBought = null;
+            _onUpdateTaskProgress = null;
+        }
+
         public void MoneyValueChanged()
         {
             if (_finance!=null)
@@ -141,7 +149,6 @@ namespace Systems.MarketSystem
             {
                 _finance.SubtractMoney(product.itemFinanceData.buyValue);
                 _onBuildingBought.Invoke(product.id);
-                CloseMarket();
             }
         }
 
@@ -154,7 +161,7 @@ namespace Systems.MarketSystem
                     plantType =harvestProductFarmingItem.PlantType,
                     sellCount = harvestProductFarmingItem.CurrentStackCount,
                 };
-                _onUpdateTaskProgress.Invoke(harvestTaskData);
+                _onUpdateTaskProgress?.Invoke(harvestTaskData);
             }
            
             

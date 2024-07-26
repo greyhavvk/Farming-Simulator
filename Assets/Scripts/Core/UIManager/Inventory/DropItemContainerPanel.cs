@@ -5,7 +5,7 @@ namespace Core.UIManager
     public class DropItemContainerPanel : InteractablePanel
     {
         private Action _onDropItemContainerPanelClick;
-
+        
         public void Initialize(Action onDropItemContainerPanelClick)
         {
             _onDropItemContainerPanelClick = onDropItemContainerPanelClick;
@@ -19,6 +19,11 @@ namespace Core.UIManager
                     _onDropItemContainerPanelClick?.Invoke();
                     break;
             }
+        }
+
+        public void DisableListeners()
+        {
+            _onDropItemContainerPanelClick = null;
         }
     }
 }

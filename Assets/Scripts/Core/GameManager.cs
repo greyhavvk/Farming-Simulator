@@ -1,4 +1,3 @@
-using System;
 using Systems.FarmingSystems;
 using Systems.FinanceSystem;
 using Systems.InventorySystem;
@@ -9,6 +8,7 @@ using Systems.PlacementSystem;
 using Systems.PlayerSystem;
 using Systems.TaskSystem;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Core
 {
@@ -23,11 +23,16 @@ namespace Core
         [SerializeField] private FarmingController farmingController;
         [SerializeField] private FinanceController financeController;
         [SerializeField] private MarketController marketController;
-        
+
+        private GameState _gameState;
+        private GameState _previousState;
+
         private void Awake()
         {
             InitializeComponents();
             SetListeners();
+            ChangeGameState(GameState.Normal);
+            playerController.GainControls();
         }
 
         private void OnDisable()
@@ -39,44 +44,164 @@ namespace Core
         {
             // InputManager'ı başlat
             inputManager.Initialize();
-            
+
             uiManager.Initialize(RefreshInventory, DropItemFromInventory, FillItemStackFromAnother, inputManager);
-            
-            farmingController.Initialize(ReduceStackableItemFromSeedStack, inventoryController.InstanceItemFromPosition);
-            
-            inventoryController.Initialize(uiManager, inputManager);
-            
-            placementManager.Initialize(inputManager,farmingController);
+
+            farmingController.Initialize(ReduceStackableItemFromSeedStack,
+                inventoryController.InstanceItemFromPosition);
+
+            inventoryController.Initialize(uiManager);
+
+            placementManager.Initialize(inputManager, farmingController, PlacementEnded);
 
             // PlayerController'ı başlat ve inputManager'ı ile birlikte initialize et
-            playerController.Initialize(inputManager,uiManager, inventoryController.TryAddDroppedItem, farmingController, MarketInteracted);
-            
+            playerController.Initialize(inputManager, uiManager, inventoryController.TryAddDroppedItem,
+                farmingController, MarketInteracted);
+
             taskManager.Initialize(uiManager, SetTaskListener, ClearTaskListeners);
-            
+
             financeController.Initialize(uiManager, marketController.MoneyValueChanged);
-            
-            marketController.Initialize(financeController, uiManager, placementManager.StartPlacement, inventoryController.InstanceItemFromPosition, ItemSold);
-            
+
+            marketController.Initialize(financeController, uiManager, StartPlacement,
+                inventoryController.InstanceItemFromPosition, ItemSold);
+
+        }
+        
+        private void Update()
+        {
+            ListenInputs();
+        }
+
+        private void ListenInputs()
+        {
+            switch (_gameState)
+            {
+                case GameState.Normal:
+                    if (inputManager.GetInventoryUITriggerInput())
+                    {
+                        OpenInventory();
+                    }
+                    else if (inputManager.GetSettingUITriggerInput())
+                    {
+                        OpenSetting();
+                    }
+
+                    break;
+                case GameState.Inventory:
+                    if (inputManager.GetInventoryUITriggerInput())
+                    {
+                        CloseInventory();
+                    }
+                    else if (inputManager.GetSettingUITriggerInput())
+                    {
+                        OpenSetting();
+                    }
+
+                    break;
+                case GameState.Market:
+                    if (inputManager.GetSettingUITriggerInput())
+                    {
+                        OpenSetting();
+                    }
+
+                    break;
+                case GameState.Setting:
+                    if (inputManager.GetSettingUITriggerInput())
+                    {
+                        CloseSetting();
+                    }
+
+                    break;
+                case GameState.Building:
+                    if (inputManager.GetSettingUITriggerInput())
+                    {
+                        OpenSetting();
+                    }
+
+                    break;
+            }
+        }
+        
+        private void PlacementEnded()
+        {
+            ChangeGameState(GameState.Normal);
+        }
+
+        private void StartPlacement(int placeAbleItemID)
+        {
+            placementManager.StartPlacement(placeAbleItemID);
+            marketController.CloseMarket();
+            playerController.GainControls();
+            ChangeGameState(GameState.Building);
+        }
+
+        private void OpenInventory()
+        {
+            playerController.LoseControls();
+            inventoryController.InventoryUITriggered();
+            ChangeGameState(GameState.Inventory);
+        }
+
+        public void CloseInventory()
+        {
+            playerController.GainControls();
+            inventoryController.InventoryUITriggered();
+            ChangeGameState(GameState.Normal);
+        }
+
+        public void OpenSetting()
+        {
+            Time.timeScale = 0;
+            ChangeGameState(GameState.Setting);
+            uiManager.OpenSettingPanel();
+            playerController.LoseControls();
+        }
+
+        public void CloseSetting()
+        {
+            Time.timeScale = 1;
+            if (_previousState==GameState.Normal || _previousState==GameState.Building)
+            {
+                playerController.GainControls();
+            }
+            ChangeGameState(_previousState);
+            uiManager.CloseSettingPanel();
+        }
+
+        private void ChangeGameState(GameState newState)
+        {
+            _previousState = _gameState;
+            _gameState = newState;
         }
 
         private void ItemSold(FarmingItemData farmingItemData)
         {
-            playerController.RemoveItemFromHotBar(farmingItemData);
             inventoryController.RemoveItem(farmingItemData);
+            playerController.RemoveItemFromHotBar(farmingItemData);
+            RefreshInventory();
         }
 
         private void MarketInteracted()
         {
-           marketController.OpenMarket(inventoryController.GetItemsForSell());
+            playerController.LoseControls();
+            ChangeGameState(GameState.Market);
+            marketController.OpenMarket(inventoryController.GetItemsForSell());
+        }
+
+        public void CloseMarket()
+        {
+            marketController.CloseMarket();
+            playerController.GainControls();
+            ChangeGameState(GameState.Normal);
         }
 
         private void SetListeners()
         {
         }
-        
+
         private void ClearListeners()
         {
-            
+            ClearTaskListeners();
         }
 
         private void FillItemStackFromAnother(FarmingItemData target, FarmingItemData filler)
@@ -89,10 +214,14 @@ namespace Core
             inventoryController.DropItemFromInventory(itemData);
             playerController.RemoveItemFromHotBar(itemData);
         }
-        
+
         private void ReduceStackableItemFromSeedStack(StackableFarmingItem stackableFarmingItem, int reduceCount)
         {
-            inventoryController.ReduceStackableItemFromSeedStack(stackableFarmingItem, reduceCount);
+            inventoryController.ReduceStackableItemFromSeedStack(stackableFarmingItem, reduceCount, out var removedItem);
+            if (removedItem!=null)
+            {
+                playerController.RemoveItemFromHotBar(removedItem);
+            }
             RefreshInventory();
         }
 
@@ -101,7 +230,7 @@ namespace Core
             inventoryController.RefreshInventory();
             playerController.RefreshHotBar();
         }
-        
+
         private void ClearTaskListeners()
         {
             playerController.ClearTaskListeners();
@@ -126,6 +255,12 @@ namespace Core
                     farmingController.TriggerTaskListener(taskManager.UpdateTaskProgress);
                     break;
             }
+        }
+
+        public void OnQuitButtonClicked()
+        {
+            Time.timeScale = 1;
+            SceneManager.LoadScene(0);
         }
     }
 }

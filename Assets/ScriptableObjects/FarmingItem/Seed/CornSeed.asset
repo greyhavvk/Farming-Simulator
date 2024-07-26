@@ -18,6 +18,14 @@ MonoBehaviour:
     buyValue: 0
   itemIndexID: 0
   maxStackCount: 3
-  farmingJobs: []
+  farmingJobs:
+  - currentCompletionValue: 0
+    targetCompletionValue: 5
+    targetCompletionSpeedValue: 1
+    farmingJobType: 0
+  - currentCompletionValue: 0
+    targetCompletionValue: 5
+    targetCompletionSpeedValue: 1
+    farmingJobType: 1
   plantType: 0
   productID: 6

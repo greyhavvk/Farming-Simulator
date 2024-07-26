@@ -21,10 +21,17 @@ namespace Systems.FarmingSystems
             _fields = new Dictionary<GameObject, FarmingField>();
         }
 
+        private void OnDisable()
+        {
+            _onHarvestProduct = null;
+            _onSeedUsed = null;
+            _onHarvestProduct = null;
+        }
+
         public void AddField(GameObject fieldGameObject)
         {
             var field = fieldGameObject.GetComponent<FarmingField>();
-            if (field && _fields.ContainsValue(field))
+            if (field && !_fields.ContainsValue(field))
             {
                 field.Initialize(_onUpdateTaskProgress,_onHarvestProduct);
                 _fields.Add(fieldGameObject,field);
@@ -39,17 +46,22 @@ namespace Systems.FarmingSystems
                 switch (farmingItem.FarmingItem)
                 {
                     case SeedFarmingItem seedFarmingItem:
-                        if (field.SetCurrentSeed(seedFarmingItem))
-                        {
-                            if (seedFarmingItem.CurrentStackCount>0)
+                        if (!field.TryHarvestIfReady())
+                            if (field.SetCurrentSeed(seedFarmingItem))
                             {
-                                _onSeedUsed?.Invoke(seedFarmingItem,1);
+                                if (seedFarmingItem.CurrentStackCount > 0)
+                                {
+                                    _onSeedUsed?.Invoke(seedFarmingItem, 1);
+                                }
                             }
-                        }
+
                         break;
                     case FarmingTool farmingTool:
-                        field.IncreaseJobProgress(farmingTool.FarmingJobType,
-                            farmingTool.FarmingJobSpeedAdder * Time.deltaTime);
+                        if (!field.TryHarvestIfReady())
+                        {
+                            field.IncreaseJobProgress(farmingTool.FarmingJobType,
+                                farmingTool.FarmingJobSpeedAdder * Time.deltaTime);
+                        }
                         break;
                     default:
                         field.TryHarvestIfReady();

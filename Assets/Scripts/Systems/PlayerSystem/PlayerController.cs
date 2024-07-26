@@ -32,6 +32,13 @@ namespace Systems.PlayerSystem
             holdingItemHandler.Initialize(interactedField);
         }
 
+        private void SetPlayerMoveAndCameraForOnUIStatus(bool status)
+        {
+            movement.SetPlayerMoveForOnUIStatus(status);
+            lookAround.SetCameraForOnUIStatus(status);
+            interaction.SetUsingForOnUIStatus(status);
+        }
+
         private void FieldInteractionEnded()
         {
             holdingItemHandler.FieldInteractionEnded();
@@ -56,7 +63,6 @@ namespace Systems.PlayerSystem
         {
             if (_playerInput == null)
             {
-                Debug.LogWarning("InputManager is not assigned.");
                 return;
             }
 
@@ -91,12 +97,12 @@ namespace Systems.PlayerSystem
 
         public void TriggerTaskListener(Action<TaskData> updateTaskProgress)
         {
-            movement._onUpdateTaskProgress += updateTaskProgress;
+            movement.onUpdateTaskProgress += updateTaskProgress;
         }
 
         public void ClearTaskListeners()
         {
-            movement._onUpdateTaskProgress =null;
+            movement.onUpdateTaskProgress =null;
         }
         
         public void RefreshHotBar()
@@ -114,6 +120,16 @@ namespace Systems.PlayerSystem
             var scrollDelta = _playerInput.GetScrollDelta();
             
                 hotBarHandler.HandleItemSelectScroll(scrollDelta);
+        }
+
+        public void LoseControls()
+        {
+            SetPlayerMoveAndCameraForOnUIStatus(false);
+        }
+
+        public void GainControls()
+        {
+            SetPlayerMoveAndCameraForOnUIStatus(true);
         }
     }
 }

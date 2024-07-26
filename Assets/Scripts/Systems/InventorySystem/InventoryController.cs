@@ -10,24 +10,21 @@ using UnityEngine;
 
 namespace Systems.InventorySystem
 {
-    public class InventoryController : MonoBehaviour, IOpenClosedInventoryUI
+    public class InventoryController : MonoBehaviour
     {
         [SerializeField] private Transform dropCenterTransform;
         [SerializeField] private DropItem refDropItem;
         [SerializeField] private List<InventoryItemSetting> itemSettings;
         private ObjectPool _dropItemPool;
-       // private FarmingItemData[] _items;
         [SerializeField] private int inventorySize;
         private IInventoryUI _inventoryUI;
 
         private InventoryModel _inventoryModel;
         private DropItemHandler _dropItemHandler;
         private bool _inventoryOpened;
-        private IInventoryInput _inventoryInput;
 
-        public void Initialize(IInventoryUI inventoryUI, IInventoryInput inventoryInput)
+        public void Initialize(IInventoryUI inventoryUI)
         {
-            _inventoryInput = inventoryInput;
             _dropItemPool = new ObjectPool(refDropItem, 10, new DropItemPoolableObjectInitializeData());
             var items = new FarmingItemData[inventorySize];
             _inventoryUI = inventoryUI;
@@ -35,14 +32,6 @@ namespace Systems.InventorySystem
 
             _inventoryModel = new InventoryModel(items);
             _dropItemHandler = new DropItemHandler(_dropItemPool, dropCenterTransform);
-        }
-        
-        private void Update()
-        {
-            if (_inventoryInput.GetInventoryUITriggerInput())
-            {
-                InventoryUITriggered();
-            }
         }
 
         public void InventoryUITriggered()
@@ -70,9 +59,10 @@ namespace Systems.InventorySystem
             _inventoryUI.CloseInventoryPanel();
         }
 
-        public void ReduceStackableItemFromSeedStack(StackableFarmingItem stackableFarmingItem, int reduceCount)
+        public void ReduceStackableItemFromSeedStack(StackableFarmingItem stackableFarmingItem, int reduceCount, out FarmingItemData removedItem)
         {
-            _inventoryModel.ReduceStackableItemFromSeedStack(stackableFarmingItem, reduceCount);
+            _inventoryModel.ReduceStackableItemFromSeedStack(stackableFarmingItem, reduceCount, out removedItem);
+            UpdateInventoryUI();
         }
 
         public void RefreshInventory()
@@ -84,7 +74,7 @@ namespace Systems.InventorySystem
         public void RemoveItem(FarmingItemData farmingItemData)
         {
             _inventoryModel.RemoveItemFromInventory(farmingItemData);
-            _inventoryUI.RefreshInventory();
+            UpdateInventoryUI();
         }
 
         public void TryAddDroppedItem(GameObject addedItemGameObject)

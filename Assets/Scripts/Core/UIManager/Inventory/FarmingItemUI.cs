@@ -54,5 +54,11 @@ namespace Core.UIManager
         {
             _onFarmingItemUIPointerDown?.Invoke(farmingItemData, this);
         }
+
+        public void DisableListeners()
+        {
+            _onFarmingItemUIPointerDown = null;
+            _onFarmingItemUIPointerUp = null;
+        }
     }
 }

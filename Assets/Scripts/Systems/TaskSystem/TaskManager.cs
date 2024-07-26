@@ -24,7 +24,13 @@ namespace Systems.TaskSystem
         
             SetTask();
         }
-    
+
+        private void OnDisable()
+        {
+            _clearTaskListeners = null;
+            _updateTaskProgressListener = null;
+        }
+
         private void HandleTaskCompleted(TaskModel task)
         {
             _taskUI.ClearTaskUI();

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Core.InputManager;
 using Systems.FarmingSystems;
 using UnityEditor;
@@ -23,14 +24,21 @@ namespace Systems.PlacementSystem
 
         private Ray _ray;
         private RaycastHit _hit;
+        private Action _placementEnded;
 
-        public void Initialize(IPlacementInput placementInput, IFieldAdded fieldAdded)
+        public void Initialize(IPlacementInput placementInput, IFieldAdded fieldAdded,Action placementEnded)
         {
+            _placementEnded = placementEnded;
             _fieldAdded = fieldAdded;
             _placementInput = placementInput;
             gridController.Initialize();
             enabled = false;
             PlaceAtPoint(marketPlaceableItem, marketRefPoint.position);
+        }
+
+        private void OnDisable()
+        {
+            _placementEnded = null;
         }
 
         private void PlaceAtPoint(PlaceableItem placeableItem, Vector3 position)
@@ -126,6 +134,7 @@ namespace Systems.PlacementSystem
             {
                 _fieldAdded.AddField(_currentItem.gameObject);
             }
+            _placementEnded?.Invoke();
             _currentItem = null;
             enabled = false;
         }

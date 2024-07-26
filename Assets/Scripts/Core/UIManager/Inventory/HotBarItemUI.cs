@@ -73,5 +73,11 @@ namespace Core.UIManager
         {
             selectedVisual.SetActive(selected);
         }
+
+        public void DisableListeners()
+        {
+            _hotBarButtonClicked = null;
+            _onFarmingItemPlacedToHotBar = null;
+        }
     }
 }

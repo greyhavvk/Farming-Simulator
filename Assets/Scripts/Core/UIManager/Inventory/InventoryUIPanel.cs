@@ -47,9 +47,26 @@ namespace Core.UIManager
             _cursorInitialPos = holdingCursor.transform.position;
         }
 
+        public void DisableListeners()
+        {
+            dropItemContainerPanel.DisableListeners();
+            foreach (var existingFarmingItemUI in existingFarmingItemUIs)
+            {
+                existingFarmingItemUI.DisableListeners();
+            }
+            
+            foreach (var existingHotBarItemUI in existingHotBarItemUIs)
+            {
+                existingHotBarItemUI.DisableListeners();
+            }
+        }
+
         private void Update()
         {
-            UpdateCursorPosition();
+            if (inventoryUIPanel.activeSelf)
+            {
+                UpdateCursorPosition();
+            }
         }
 
         private void UpdateCursorPosition()

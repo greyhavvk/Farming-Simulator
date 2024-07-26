@@ -15,7 +15,7 @@ namespace Systems.InventorySystem.InventoryItems
         public SeedFarmingItem(FarmingItemData farmingItemData, ItemFinanceData itemFinanceData, int itemIndexID, Sprite icon, int maxStackCount, int initStackCount, PlantType plantType, List<FarmingProgress> farmingJobs, int productID) : base(farmingItemData, itemFinanceData, itemIndexID, icon, maxStackCount,initStackCount)
         {
             PlantType = plantType;
-            FarmingJobs = farmingJobs;
+            FarmingJobs = new List<FarmingProgress>(farmingJobs);
             ProductID = productID;
         }
        

@@ -7,7 +7,7 @@ namespace Systems.FarmingSystems
     public class FarmingProgress
     {
         public float JobCompletionRate => currentCompletionValue / targetCompletionValue;
-        [HideInInspector]public float currentCompletionValue;
+        public float currentCompletionValue=0;
         public float targetCompletionValue;
         public float targetCompletionSpeedValue;
         public FarmingJobType farmingJobType;

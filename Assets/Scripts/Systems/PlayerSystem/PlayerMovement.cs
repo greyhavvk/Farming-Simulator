@@ -1,14 +1,13 @@
 ﻿using System;
 using Systems.TaskSystem;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Systems.PlayerSystem
 {
     public class PlayerMovement : MonoBehaviour
     {
         [SerializeField] private Rigidbody playerRigidbody;
-        [SerializeField] private float moveSpeed=5;
+        private float _moveSpeed;
         [SerializeField] private LayerMask layerMask;
         private RaycastHit _hit;
         private bool _isHit;
@@ -18,20 +17,28 @@ namespace Systems.PlayerSystem
         private Transform _playerTransform;
         private Vector3 _playerPosition;
         private Vector3 _rayCastOrigin;
-        
-        public Action<TaskData> _onUpdateTaskProgress;
+        private bool _canMove = true;
+        public Action<TaskData> onUpdateTaskProgress;
 
         public void Initialize(float moveSpeed)
         {
-            this.moveSpeed = moveSpeed;
+            _moveSpeed = moveSpeed;
             _playerTransform = transform;
         }
 
-        public void HandleMovement(float horizontalInput, float verticalInput)
+        private void OnDisable()
         {
-            _movementDirection = _playerTransform.forward * verticalInput + _playerTransform.right * horizontalInput;
-            _movementAmount = _movementDirection * moveSpeed ;
+            onUpdateTaskProgress = null;
+        }
 
+        public void HandleMovement(float horizontalInput, float verticalInput)
+        {  
+            if (!_canMove)
+            {
+                return;
+            }
+            _movementDirection = _playerTransform.forward * verticalInput + _playerTransform.right * horizontalInput;
+            _movementAmount = _movementDirection * _moveSpeed ;
             // Karakterin yeni pozisyonunu hesapla
             _playerPosition = _playerTransform.position;
             _rayCastOrigin=_playerPosition+Vector3.up * .25f;
@@ -40,9 +47,6 @@ namespace Systems.PlayerSystem
 
             if (_isHit)
             {
-                // Eğer bir şey ile çarpışacaksa, çarpışma tepkisini burada kontrol edebilirsiniz
-                Debug.Log("Engel algılandı: " + _hit.collider.name);
-
                 // Örneğin, karakteri engel öncesinde durdurabilir veya engeli atlayabilir
                 StopMovement();
             }
@@ -50,13 +54,12 @@ namespace Systems.PlayerSystem
             {
                 // Eğer engel yoksa, normal şekilde hareket ettir
                 playerRigidbody.velocity = _movementAmount;
-
-                if (_onUpdateTaskProgress == null) return;
+                if (onUpdateTaskProgress == null) return;
                 var moveTaskData = new MoveTaskData
                 {
                     moveDirection = new Vector2(verticalInput, horizontalInput)
                 };
-                _onUpdateTaskProgress.Invoke(moveTaskData);
+                onUpdateTaskProgress.Invoke(moveTaskData);
             }
         }
 
@@ -64,6 +67,12 @@ namespace Systems.PlayerSystem
         {
             // Hareketi durdurmak için karakteri yerinde tutabilirsiniz
             playerRigidbody.velocity = Vector3.zero;
+        }
+
+        public void SetPlayerMoveForOnUIStatus(bool status)
+        {
+            _canMove = status;
+            StopMovement();
         }
     }
 }

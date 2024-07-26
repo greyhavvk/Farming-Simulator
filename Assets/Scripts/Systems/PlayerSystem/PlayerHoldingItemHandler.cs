@@ -13,7 +13,7 @@ namespace Systems.PlayerSystem
         [SerializeField] private List<GameObject> holdingItems;
         private FarmingItemData _holdingItem;
         private IInteractedField _interactedField;
-        
+
         public void SetHoldingItem(FarmingItemData farmingItemData)
         {
             _holdingItem = farmingItemData;
@@ -35,7 +35,7 @@ namespace Systems.PlayerSystem
 
         private void UseItemAnimation()
         {
-            if (_holdingItem.FarmingItem is FarmingTool farmingTool)
+            if (_holdingItem?.FarmingItem is FarmingTool farmingTool)
             {
                 animator.SetInteger("usingItem", (int)farmingTool.FarmingJobType);
             }
@@ -59,6 +59,7 @@ namespace Systems.PlayerSystem
 
         public void InteractingTriedAnimation()
         {
+            animator.ResetTrigger("interactionTried");
             animator.SetTrigger("interactionTried");
         }
 
@@ -67,5 +68,6 @@ namespace Systems.PlayerSystem
             animator.SetInteger("usingItem", -1);
             animator.SetBool("itemUsing", false);
         }
+
     }
 }

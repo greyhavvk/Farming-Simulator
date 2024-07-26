@@ -203,15 +203,15 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 134906127333916342}
-  - {fileID: 7247862830926929989}
   - {fileID: 1312451413459110723}
+  - {fileID: 7247862830926929989}
+  - {fileID: 134906127333916342}
   - {fileID: 1921716958804458867}
   - {fileID: 8274616744249837972}
   - {fileID: 879532236764721590}
-  - {fileID: 6140123237293490963}
   - {fileID: 546649080563505176}
   - {fileID: 2833007183326980225}
+  - {fileID: 6140123237293490963}
   - {fileID: 4081595334625419351}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -228,15 +228,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropItemVisuals:
-  - {fileID: 128572050502708922}
-  - {fileID: 7242381014640308297}
   - {fileID: 1306409386938440527}
+  - {fileID: 7242381014640308297}
+  - {fileID: 128572050502708922}
   - {fileID: 1919220436194992757}
   - {fileID: 8276604167207933586}
   - {fileID: 882008839341026992}
-  - {fileID: 6142268978043661667}
   - {fileID: 549308271711272330}
   - {fileID: 2830152067319653987}
+  - {fileID: 6142268978043661667}
   stackText: {fileID: 3890073512316870671}
   dropItemCollider: {fileID: 3037574866553140729}
 --- !u!65 &3037574866553140729

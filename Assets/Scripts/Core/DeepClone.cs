@@ -5,9 +5,9 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Core
 {
-    public class Program
+    public class DeepClone
     {
-        public static T DeepClone<T>(T obj)
+        public static T DeepCloneIt<T>(T obj)
         {
             if (obj == null)
             {

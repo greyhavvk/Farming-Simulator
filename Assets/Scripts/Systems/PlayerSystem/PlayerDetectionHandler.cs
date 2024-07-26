@@ -18,7 +18,6 @@ namespace Core.Player
             if (other.CompareTag(dropItemTag))
             {
                 _onDropItemDetected?.Invoke(other.gameObject);
-                Debug.Log($"Item detected: {other.name}");
             }
         }
     }

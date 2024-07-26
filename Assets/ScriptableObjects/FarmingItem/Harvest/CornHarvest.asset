@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: e1154e3c87694b0499ed5f7792b22037, type: 3}
   financeData:
-    sellValue: 0
+    sellValue: 10
     buyValue: 0
   itemIndexID: 6
   maxStackCount: 10

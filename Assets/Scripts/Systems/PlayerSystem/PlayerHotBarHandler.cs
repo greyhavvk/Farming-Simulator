@@ -26,6 +26,11 @@ namespace Systems.PlayerSystem
             ItemSelectedFromIndex(_currentSelectedItemIndex);
         }
 
+        private void OnDisable()
+        {
+            _onItemSelectedFromHotBar = null;
+        }
+
         public void RefreshHotBar()
         {
             _itemDatas = _inventoryUI.CalculateNewHotBarItemList().ToArray();

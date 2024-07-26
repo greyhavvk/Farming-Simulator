@@ -20,8 +20,9 @@ namespace Systems.FinanceSystem
             _financeModel.Initialize(initialMoney,HandleMoneyChanged);
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
+            _moneyValueChanged = null;
             _financeModel?.OnDestroy();
         }
 

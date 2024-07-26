@@ -2,6 +2,7 @@
 using System.Linq;
 using Systems.InventorySystem.InventoryItems;
 using Systems.InventorySystem.InventoryItems.Data;
+using UnityEngine;
 
 namespace Systems.InventorySystem
 {
@@ -88,14 +89,16 @@ namespace Systems.InventorySystem
             return false;
         }
 
-        public void ReduceStackableItemFromSeedStack(StackableFarmingItem stackableFarmingItem, int reduceCount)
+        public void ReduceStackableItemFromSeedStack(StackableFarmingItem stackableFarmingItem, int reduceCount,out FarmingItemData removedItem)
         {
             stackableFarmingItem.SetStackCount(stackableFarmingItem.CurrentStackCount-reduceCount);
-            
+            removedItem = null;
             if (IsEmpty(stackableFarmingItem))
             {
+                removedItem = stackableFarmingItem.FarmingItemData;
                 RemoveItemFromInventory(stackableFarmingItem.FarmingItemData);
             }
+            
         }
 
         public void FillItemStackFromAnother(FarmingItemData targetItem, FarmingItemData fillerItem)

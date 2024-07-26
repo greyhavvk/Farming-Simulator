@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Core;
 using Systems.InventorySystem.InventoryItems;
 using Systems.TaskSystem;
 using TMPro;
@@ -34,13 +35,29 @@ namespace Systems.FarmingSystems
             enabled = false;
         }
 
+        private void OnDisable()
+        {
+            _onHarvestProduct = null;
+            _onUpdateTaskProgress = null;
+        }
+
         public bool SetCurrentSeed(SeedFarmingItem seedFarmingItem)
         {
             if (_currentSeed == null)
             {
+                _farmingJobs = new List<FarmingProgress>();
                 _currentSeed = seedFarmingItem;
-                _farmingJobs = _currentSeed.FarmingJobs;
+                for (int i = 0; i < _currentSeed.FarmingJobs.Count; i++)
+                {
+                    var farmingJob = DeepClone.DeepCloneIt(_currentSeed.FarmingJobs[i]);
+                    _farmingJobs.Add(farmingJob);
+                }
                 UpdateVisual();
+                var plantSeedTask = new PlantSeedData()
+                {
+                    plantType = _currentSeed.PlantType
+                };
+                _onUpdateTaskProgress?.Invoke(plantSeedTask);
                 return true;
             }
 
@@ -51,11 +68,18 @@ namespace Systems.FarmingSystems
         {
             if (_currentSeed != null)
             {
-                progressParent.SetActive(_farmingJobs.Count > 0);
-                progressBar.value = _farmingJobs[0].JobCompletionRate;
-                //TODO textlerde ne yazacağına tekrar bakacağım.
-                text.text = _currentSeed.PlantType.ToString() + _farmingJobs[0].farmingJobType;
-                icon.sprite = _currentSeed.Icon;
+                if (_farmingJobs.Count>0)
+                {
+                    progressParent.SetActive(true);
+                    progressBar.value = _farmingJobs[0].JobCompletionRate;
+                    //TODO textlerde ne yazacağına tekrar bakacağım.
+                    text.text = _currentSeed.PlantType + " " + _farmingJobs[0].farmingJobType;
+                    icon.sprite = _currentSeed.Icon;
+                }
+                else
+                {
+                    progressParent.SetActive(false);
+                }
                 SetPlantVisual();
             }
             else
@@ -66,12 +90,21 @@ namespace Systems.FarmingSystems
 
         private void SetPlantVisual()
         {
-
             foreach (var plantVisual in plantVisuals)
             {
                 plantVisual.gameObject.SetActive(false);
             }
 
+            if (_readyToHarvest)
+            {
+                var plant = plantVisuals.Find(match: visual => visual.PlantType == _currentSeed.PlantType);
+                if (plant)
+                {
+                    plant.gameObject.SetActive(true);
+                    plant.SetPlantVisual(1);
+                }
+                return;
+            }
             if (_isPlanted)
             {
                 var plant = plantVisuals.Find(match: visual => visual.PlantType == _currentSeed.PlantType);
@@ -85,10 +118,13 @@ namespace Systems.FarmingSystems
 
         public void IncreaseJobProgress(FarmingJobType farmingJobType, float progressAdder)
         {
+            if (_farmingJobs.Count==0)
+            {
+                return;
+            }
             if (farmingJobType==_farmingJobs[0].farmingJobType)
             {
                 _farmingJobs[0].currentCompletionValue += progressAdder;
-
                 if (_farmingJobs[0].JobCompletionRate>=1)
                 {
                     _farmingJobs.Remove(_farmingJobs[0]);
@@ -140,10 +176,15 @@ namespace Systems.FarmingSystems
             UpdateVisual();
         }
 
-        public void TryHarvestIfReady()
+        public bool TryHarvestIfReady()
         {
             if (_readyToHarvest)
+            {
                 Harvest();
+                return true;
+            }
+
+            return false;
         }
     }
 }

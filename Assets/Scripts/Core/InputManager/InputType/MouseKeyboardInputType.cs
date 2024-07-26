@@ -30,6 +30,16 @@ namespace Core.InputManager.InputType
             return Input.GetKeyDown(KeyCode.Tab);
         }
 
+        public override bool IsInteractButtonPressedDown()
+        {
+            return Input.GetMouseButtonDown(0);
+        }
+
+        public override bool GetSettingUITriggerInput()
+        {
+            return Input.GetKeyDown(KeyCode.Escape);
+        }
+
         public override float GetMouseXInput()
         {
             return Input.GetAxis("Mouse X");
@@ -42,7 +52,7 @@ namespace Core.InputManager.InputType
 
         public override bool IsPlacementConfirmed()
         {
-            return Input.GetKeyDown(KeyCode.C);
+            return Input.GetMouseButtonDown(0);
         }
 
         public override Vector3 ConfirmedPosition()
