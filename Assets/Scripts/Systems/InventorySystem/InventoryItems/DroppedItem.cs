@@ -1,22 +1,21 @@
 ﻿using System.Collections.Generic;
 using Core.ObjectPool;
 using DG.Tweening;
-using Systems.InventorySystem.InventoryItems;
 using TMPro;
 using UnityEngine;
 
-namespace Systems.InventorySystem
+namespace Systems.InventorySystem.InventoryItems
 {
     public class DropItem : PoolableObject
     {
         [SerializeField] private List<GameObject> dropItemVisuals;
         [SerializeField] private TMP_Text stackText;
         [SerializeField] private Collider dropItemCollider;
-        private float _minRadius = 1.0f; // Minimum yarıçap
-        private float _maxRadius = 3.0f; // Maksimum yarıçap
-        private float _jumpPower = 1.0f; // Zıplama gücü
-        private int _numJumps = 1; // Zıplama sayısı
-        private float _dropDuration = .5f; // Zıplama
+        private readonly float _minRadius = 1.0f; 
+        private readonly float _maxRadius = 3.0f;
+        private readonly float _jumpPower = 1.0f;
+        private readonly int _numJumps = 1; 
+        private readonly float _dropDuration = .5f; 
 
         private IFarmingItem _farmingItem;
 
@@ -28,11 +27,9 @@ namespace Systems.InventorySystem
             float angle = Random.Range(-Mathf.PI / 2, Mathf.PI / 2);
             float radius = Random.Range(_minRadius, _maxRadius);
 
-            // Hedef pozisyonu hesapla
             Vector3 targetPosition = dropCenter + new Vector3(Mathf.Cos(angle) * radius, 0, Mathf.Sin(angle) * radius);
 
             transform.position = dropCenter;
-            // DOTween Jump fonksiyonunu kullanarak objeyi hedef pozisyona zıplat
             transform.DOJump(targetPosition, _jumpPower, _numJumps, _dropDuration).OnComplete(() =>
             {
                 dropItemCollider.enabled = true;

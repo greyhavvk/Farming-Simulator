@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Core.UIManager
+namespace Core.UIManager.Option
 {
     public class OptionMenuUIPanel : MonoBehaviour
     {

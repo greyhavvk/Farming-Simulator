@@ -1,4 +1,5 @@
 ﻿using Core.ObjectPool;
+using Systems.InventorySystem.InventoryItems;
 using Systems.InventorySystem.InventoryItems.Data;
 using UnityEngine;
 

@@ -1,11 +1,10 @@
 ﻿using System;
-using Systems.InventorySystem;
 using Systems.InventorySystem.InventoryItems;
 using Systems.InventorySystem.InventoryItems.Data;
 using TMPro;
 using UnityEngine;
 
-namespace Core.UIManager
+namespace Core.UIManager.Inventory
 {
     public class FarmingItemUI : InventoryItemUI
     {
@@ -13,21 +12,22 @@ namespace Core.UIManager
         private Action<FarmingItemData, FarmingItemUI> _onFarmingItemUIPointerDown;
         private Action<FarmingItemUI> _onFarmingItemUIPointerUp;
 
-        public void InitializeFarmingItemUI(Action<FarmingItemData, FarmingItemUI> onFarmingItemUIPointerDown,
+        public void InitializeFarmingItemUI(
+            Action<FarmingItemData, FarmingItemUI> onFarmingItemUIPointerDown,
             Action<FarmingItemUI> onFarmingItemUIPointerUp)
         {
             _onFarmingItemUIPointerDown = onFarmingItemUIPointerDown;
             _onFarmingItemUIPointerUp = onFarmingItemUIPointerUp;
         }
-
-        //TODO buranın ayara ihtiyacı var.
+        
         public override void SetVisual()
         {
-            if (farmingItemData!=null)
+            if (farmingItemData != null)
             {
                 itemImage.gameObject.SetActive(true);
                 itemImage.sprite = farmingItemData.FarmingItem.Icon;
                 itemImage.CrossFadeAlpha(1f, 0.05f, true);
+
                 if (farmingItemData.FarmingItem is StackableFarmingItem stackableFarmingItem)
                 {
                     stackText.gameObject.SetActive(true);
@@ -44,7 +44,7 @@ namespace Core.UIManager
                 itemImage.gameObject.SetActive(false);
             }
         }
-        
+
         protected override void PointerUpTriggered()
         {
             _onFarmingItemUIPointerUp?.Invoke(this);

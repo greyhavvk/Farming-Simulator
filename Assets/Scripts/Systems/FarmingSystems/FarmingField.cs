@@ -72,7 +72,6 @@ namespace Systems.FarmingSystems
                 {
                     progressParent.SetActive(true);
                     progressBar.value = _farmingJobs[0].JobCompletionRate;
-                    //TODO textlerde ne yazacağına tekrar bakacağım.
                     text.text = _currentSeed.PlantType + " " + _farmingJobs[0].farmingJobType;
                     icon.sprite = _currentSeed.Icon;
                 }

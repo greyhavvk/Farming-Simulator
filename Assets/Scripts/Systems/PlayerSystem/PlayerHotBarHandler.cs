@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Core.UIManager;
+using Core.UIManager.Inventory;
 using Systems.InventorySystem.InventoryItems.Data;
 using UnityEngine;
 

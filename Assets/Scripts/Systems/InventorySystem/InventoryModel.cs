@@ -2,7 +2,6 @@
 using System.Linq;
 using Systems.InventorySystem.InventoryItems;
 using Systems.InventorySystem.InventoryItems.Data;
-using UnityEngine;
 
 namespace Systems.InventorySystem
 {
@@ -37,11 +36,11 @@ namespace Systems.InventorySystem
         {
             foreach (var itemData in _items)
             {
-                if (itemData is FarmingItemData farmingItemData)
+                if (itemData!=null)
                 {
-                    if (CanStackItems(farmingItemData.FarmingItem, stackableFarmingItem))
+                    if (CanStackItems(itemData.FarmingItem, stackableFarmingItem))
                     {
-                        FillItemStackFromAnother(farmingItemData, stackableFarmingItem.FarmingItemData);
+                        FillItemStackFromAnother(itemData, stackableFarmingItem.FarmingItemData);
                         if (IsEmpty(stackableFarmingItem)) return true;
                     }
                 }
@@ -125,15 +124,12 @@ namespace Systems.InventorySystem
 
             targetStackableItem.SetStackCount(targetStackableItem.CurrentStackCount + addedCount);
 
-            if (fillerStackableItem != null)
-            {
-                fillerStackableItem.SetStackCount(fillerStackableItem.CurrentStackCount - addedCount);
-            }
+            fillerStackableItem?.SetStackCount(fillerStackableItem.CurrentStackCount - addedCount);
         }
 
         private bool IsEmpty(StackableFarmingItem stackableItem)
         {
-            return stackableItem != null && stackableItem.CurrentStackCount == 0;
+            return stackableItem is { CurrentStackCount: 0 };
         }
 
         public void RemoveItemFromInventory(FarmingItemData itemData)

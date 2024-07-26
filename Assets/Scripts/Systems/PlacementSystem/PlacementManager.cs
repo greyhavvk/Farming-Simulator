@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Core.InputManager;
 using Systems.FarmingSystems;
-using UnityEditor;
 using UnityEngine;
 
 namespace Systems.PlacementSystem
@@ -59,7 +58,7 @@ namespace Systems.PlacementSystem
             enabled = true;
         }
         
-        //TODO yerleştirme iptal tuşunu eklemeliyiz. ya da şimdilik boş veririm.
+        //TODO yerleştirme iptal tuşunu eklemeliyiz.
         public void CancelPlacement()
         {
             if (_currentItem)
@@ -159,7 +158,6 @@ namespace Systems.PlacementSystem
            
         }
 
-        // ReSharper disable Unity.PerformanceAnalysis
         private void PlaceItem(IPlaceableItem item)
         {
             if (gridController.IsCellEmpty(item.Prefab.transform, item.LocalPositions))

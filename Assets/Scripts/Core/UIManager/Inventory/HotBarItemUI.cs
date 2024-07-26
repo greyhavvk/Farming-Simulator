@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Core.UIManager
+namespace Core.UIManager.Inventory
 {
     public class HotBarItemUI : InventoryItemUI
     {
@@ -14,21 +14,25 @@ namespace Core.UIManager
         private Action<HotBarItemUI> _onFarmingItemPlacedToHotBar;
         private Action<int> _hotBarButtonClicked;
         private int _index;
-        public void InitializeHotBarItemUI(Action<HotBarItemUI> onFarmingItemPlacedToHotBar, Action<int> hotBarButtonClicked, int index)
+
+        public void InitializeHotBarItemUI(
+            Action<HotBarItemUI> onFarmingItemPlacedToHotBar, 
+            Action<int> hotBarButtonClicked, 
+            int index)
         {
             _index = index;
             _hotBarButtonClicked = hotBarButtonClicked;
             _onFarmingItemPlacedToHotBar = onFarmingItemPlacedToHotBar;
         }
-        
-        //TODO buranın ayara ihtiyacı var.
+
         public override void SetVisual()
         {
-            if (farmingItemData!=null)
+            if (farmingItemData != null)
             {
                 itemImage.gameObject.SetActive(true);
                 itemImage.sprite = farmingItemData.FarmingItem.Icon;
                 itemImage.CrossFadeAlpha(1f, 0.05f, true);
+
                 if (farmingItemData.FarmingItem is StackableFarmingItem stackableFarmingItem)
                 {
                     stackText.gameObject.SetActive(true);
@@ -45,7 +49,7 @@ namespace Core.UIManager
                 itemImage.gameObject.SetActive(false);
             }
         }
-        
+
         protected override void PointerUpTriggered()
         {
             _onFarmingItemPlacedToHotBar?.Invoke(this);

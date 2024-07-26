@@ -1,8 +1,6 @@
 ﻿using System;
-using Core;
 using Core.InputManager;
-using Core.Player;
-using Core.UIManager;
+using Core.UIManager.Inventory;
 using Systems.FarmingSystems;
 using Systems.InventorySystem.InventoryItems.Data;
 using Systems.TaskSystem;
@@ -15,7 +13,7 @@ namespace Systems.PlayerSystem
         [SerializeField] private PlayerMovement movement;
         [SerializeField] private PlayerInteraction interaction;
         [SerializeField] private PlayerLookAround lookAround;
-        [SerializeField] private PlayerSettings playerSettings; // PlayerSettings'i ekledik
+        [SerializeField] private PlayerSettings playerSettings; 
         [SerializeField] private PlayerHoldingItemHandler holdingItemHandler;
         [SerializeField] private PlayerHotBarHandler hotBarHandler;
         [SerializeField] private PlayerDetectionHandler detectionHandler;
@@ -26,8 +24,8 @@ namespace Systems.PlayerSystem
             interaction.Initialize(FieldInteracted, InteractingTried, onMarketInteracted, FieldInteractionEnded);
             detectionHandler.Initialize(onDropItemDetected);
             _playerInput = playerInput;
-            lookAround.Initialize(playerSettings.TurnSensitivity); // PlayerSettings'ten dönme sensitivity'i alarak initialize ettik
-            movement.Initialize(playerSettings.MoveSpeed); // PlayerSettings'ten hareket hızını alarak initialize ettik
+            lookAround.Initialize(playerSettings.TurnSensitivity);
+            movement.Initialize(playerSettings.MoveSpeed); 
             hotBarHandler.Initialize(inventoryUI, holdingItemHandler.SetHoldingItem);
             holdingItemHandler.Initialize(interactedField);
         }

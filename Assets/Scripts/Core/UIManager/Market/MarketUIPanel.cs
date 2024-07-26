@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Systems.FinanceSystem;
 using Systems.MarketSystem;
 using UnityEngine;
 
@@ -10,7 +9,6 @@ namespace Core.UIManager.Market
     {
         [SerializeField] private ProductUIButton refButton;
         [SerializeField] private Transform buttonParent;
-        [SerializeField] private GameObject panel;
         private List<ProductUIButton> _existingButtons;
 
         public void Initialize()

@@ -1,6 +1,6 @@
 ﻿using Systems.FarmingSystems;
 
-namespace Core.UIManager
+namespace Core.UIManager.Task
 {
     public interface ITaskUI
     {

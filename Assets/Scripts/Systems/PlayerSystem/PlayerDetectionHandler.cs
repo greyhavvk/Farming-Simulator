@@ -1,11 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Core.Player
+namespace Systems.PlayerSystem
 {
     public class PlayerDetectionHandler : MonoBehaviour
     {
-        [SerializeField] private string dropItemTag = "DropItem";
+        private readonly string _dropItemTag = "DropItem";
         private Action<GameObject> _onDropItemDetected;
 
         public void Initialize(Action<GameObject> onDropItemDetected)
@@ -15,7 +15,7 @@ namespace Core.Player
         
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag(dropItemTag))
+            if (other.CompareTag(_dropItemTag))
             {
                 _onDropItemDetected?.Invoke(other.gameObject);
             }

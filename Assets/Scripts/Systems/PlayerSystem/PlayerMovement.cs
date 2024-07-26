@@ -9,7 +9,6 @@ namespace Systems.PlayerSystem
         [SerializeField] private Rigidbody playerRigidbody;
         private float _moveSpeed;
         [SerializeField] private LayerMask layerMask;
-        private RaycastHit _hit;
         private bool _isHit;
         private Vector3 _movementDirection;
         private Vector3 _movementAmount;
@@ -39,20 +38,16 @@ namespace Systems.PlayerSystem
             }
             _movementDirection = _playerTransform.forward * verticalInput + _playerTransform.right * horizontalInput;
             _movementAmount = _movementDirection * _moveSpeed ;
-            // Karakterin yeni pozisyonunu hesapla
             _playerPosition = _playerTransform.position;
             _rayCastOrigin=_playerPosition+Vector3.up * .25f;
-            // Hareket ederken önümüzde engel var mı diye kontrol et
-            _isHit = Physics.Raycast(_rayCastOrigin, _movementDirection, out _hit, _movementAmount.magnitude* Time.deltaTime, layerMask);
+            _isHit = Physics.Raycast(_rayCastOrigin, _movementDirection, _movementAmount.magnitude* Time.deltaTime, layerMask);
 
             if (_isHit)
             {
-                // Örneğin, karakteri engel öncesinde durdurabilir veya engeli atlayabilir
                 StopMovement();
             }
             else
             {
-                // Eğer engel yoksa, normal şekilde hareket ettir
                 playerRigidbody.velocity = _movementAmount;
                 if (onUpdateTaskProgress == null) return;
                 var moveTaskData = new MoveTaskData
@@ -65,7 +60,6 @@ namespace Systems.PlayerSystem
 
         private void StopMovement()
         {
-            // Hareketi durdurmak için karakteri yerinde tutabilirsiniz
             playerRigidbody.velocity = Vector3.zero;
         }
 

@@ -9,7 +9,7 @@ namespace Systems.PlayerSystem
         [SerializeField] private LayerMask interactableLayerMask;
         [SerializeField] private float interactionDistance;
        [SerializeField] private Transform interactionRayCenter;
-       private Ray _ray;
+        private Ray _ray;
         private RaycastHit _hit;
         private Action<GameObject> _onFieldInteracted;
         private Action _onInteractingTried;
@@ -17,6 +17,10 @@ namespace Systems.PlayerSystem
         private Action _onFieldInteractionEnded;
         private Transform _currentInteractingObject;
         private bool _canInteract = true;
+
+        private readonly String _fieldTag = "Field";
+
+        private readonly String _marketTag = "Market";
         
         public void Initialize(Action<GameObject> onFieldInteracted, Action onInteractingTried, Action onMarketInteracted, Action onFieldInteractionEnded)
         {
@@ -58,7 +62,7 @@ namespace Systems.PlayerSystem
                 if (Physics.Raycast(_ray, out _hit, interactionDistance, interactableLayerMask))
                 {
                     _currentInteractingObject = _hit.transform;
-                    if (_currentInteractingObject.tag!="Field" || _currentInteractingObject.tag!="Market")
+                    if (!_currentInteractingObject.CompareTag(_fieldTag) || !_currentInteractingObject.CompareTag(_marketTag))
                     {
                         InteractingTried();
                     }

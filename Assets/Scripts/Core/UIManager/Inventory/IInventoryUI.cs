@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Systems.InventorySystem;
-using Systems.InventorySystem.InventoryItems;
 using Systems.InventorySystem.InventoryItems.Data;
 
-namespace Core.UIManager
+namespace Core.UIManager.Inventory
 {
     public interface IInventoryUI
     {

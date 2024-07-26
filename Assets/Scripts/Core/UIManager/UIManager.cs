@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using Core.InputManager;
 using Core.UIManager.Finance;
+using Core.UIManager.Inventory;
 using Core.UIManager.Market;
+using Core.UIManager.Task;
 using Systems.FarmingSystems;
 using Systems.InventorySystem.InventoryItems.Data;
 using Systems.MarketSystem;
@@ -12,7 +14,6 @@ namespace Core.UIManager
 {
     public class UIManager : MonoBehaviour, ITaskUI, IInventoryUI, IFinanceUI,IMarketUI
     {
-    //TODO uı panellerinin kodları düzenlenecek
         [SerializeField] private PlantTaskUIPanel plantTaskUIPanel;
         [SerializeField] private GameObject moveTaskUIPanel;
         [SerializeField] private InventoryUIPanel inventoryUIPanel;

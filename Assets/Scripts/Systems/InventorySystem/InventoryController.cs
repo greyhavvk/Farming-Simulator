@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Core.InputManager;
 using Core.ObjectPool;
-using Core.UIManager;
+using Core.UIManager.Inventory;
 using Systems.InventorySystem.InventoryItems;
 using Systems.InventorySystem.InventoryItems.Data;
 using Systems.InventorySystem.InventoryItems.SettingSO;

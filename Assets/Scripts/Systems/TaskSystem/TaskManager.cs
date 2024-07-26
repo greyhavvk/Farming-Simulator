@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Core.UIManager;
+using Core.UIManager.Task;
 using UnityEngine;
 
 namespace Systems.TaskSystem

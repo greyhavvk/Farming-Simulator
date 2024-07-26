@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Lists;
+﻿using System.Collections.Generic;
+using Core.Lists;
 using UnityEngine;
 
 namespace Systems.PlacementSystem
@@ -13,8 +12,7 @@ namespace Systems.PlacementSystem
 
         private GridModel _gridModel;
         private Vector3 _gridOrigin;
-
-        // InitializeFarmingItemUI method
+        
         public void Initialize()
         {
             _gridModel = new GridModel(rows, columns);

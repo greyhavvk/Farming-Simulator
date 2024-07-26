@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Lists
+namespace Core.Lists
 {
     [System.Serializable]
     public class Vector3List

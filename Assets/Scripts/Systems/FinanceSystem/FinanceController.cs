@@ -1,5 +1,4 @@
 ﻿using System;
-using Core.UIManager;
 using Core.UIManager.Finance;
 using UnityEngine;
 

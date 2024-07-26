@@ -42,7 +42,6 @@ namespace Core
 
         private void InitializeComponents()
         {
-            // InputManager'ı başlat
             inputManager.Initialize();
 
             uiManager.Initialize(RefreshInventory, DropItemFromInventory, FillItemStackFromAnother, inputManager);
@@ -54,7 +53,6 @@ namespace Core
 
             placementManager.Initialize(inputManager, farmingController, PlacementEnded);
 
-            // PlayerController'ı başlat ve inputManager'ı ile birlikte initialize et
             playerController.Initialize(inputManager, uiManager, inventoryController.TryAddDroppedItem,
                 farmingController, MarketInteracted);
 

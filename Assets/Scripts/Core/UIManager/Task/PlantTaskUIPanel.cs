@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Core.UIManager
+namespace Core.UIManager.Task
 {
     [Serializable]
     public class PlantIcon

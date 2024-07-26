@@ -14,6 +14,10 @@ namespace Systems.PlayerSystem
         private FarmingItemData _holdingItem;
         private IInteractedField _interactedField;
 
+        private readonly String _usingItem = "usingItem";
+        private readonly String _itemUsing = "itemUsing";
+        private readonly String _interactionTried = "interactionTried";
+
         public void SetHoldingItem(FarmingItemData farmingItemData)
         {
             _holdingItem = farmingItemData;
@@ -37,9 +41,9 @@ namespace Systems.PlayerSystem
         {
             if (_holdingItem?.FarmingItem is FarmingTool farmingTool)
             {
-                animator.SetInteger("usingItem", (int)farmingTool.FarmingJobType);
+                animator.SetInteger(_usingItem, (int)farmingTool.FarmingJobType);
             }
-            animator.SetBool("itemUsing", true);
+            animator.SetBool(_itemUsing, true);
         }
 
         public void Initialize(IInteractedField interactedField)
@@ -59,14 +63,14 @@ namespace Systems.PlayerSystem
 
         public void InteractingTriedAnimation()
         {
-            animator.ResetTrigger("interactionTried");
-            animator.SetTrigger("interactionTried");
+            animator.ResetTrigger(_interactionTried);
+            animator.SetTrigger(_interactionTried);
         }
 
         public void FieldInteractionEnded()
         {
-            animator.SetInteger("usingItem", -1);
-            animator.SetBool("itemUsing", false);
+            animator.SetInteger(_usingItem, -1);
+            animator.SetBool(_itemUsing, false);
         }
 
     }

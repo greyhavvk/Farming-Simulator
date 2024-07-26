@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using Lists;
+using Core.Lists;
 using UnityEngine;
 
 namespace Systems.PlacementSystem
 {
     public class PlaceableItem : MonoBehaviour, IPlaceableItem
     {
-        [SerializeField] private List<Vector3List> localPositions; // Öğenin boyutu
+        [SerializeField] private List<Vector3List> localPositions;
         [SerializeField] private List<MeshRenderer> placeableMeshRenderers;
         public  List<Vector3List> LocalPositions => localPositions;
         public GameObject Prefab => gameObject;

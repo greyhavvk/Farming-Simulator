@@ -1,6 +1,4 @@
-﻿using Unity.VisualScripting;
-
-namespace Core
+﻿namespace Core
 {
     public enum GameState
     {

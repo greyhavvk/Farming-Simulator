@@ -8,15 +8,15 @@ namespace Systems.PlayerSystem
         [SerializeField] private Transform cameraBody;
         [SerializeField] private float turnSensitivity = 100f;
 
-        private float _cameraRotation = 0f;
-        private float _playerRotation = 0f;
+        private float _cameraRotation;
+        private float _playerRotation;
         private bool _canLookAround = true;
 
         public void Initialize(float sensitivity )
         {
             _cameraRotation = cameraBody.localEulerAngles.x;
             turnSensitivity = sensitivity;
-            Cursor.lockState = CursorLockMode.Locked; // Fare imleci ekranın ortasında kilitlenir
+            Cursor.lockState = CursorLockMode.Locked; 
         }
 
         public void HandleLookAround(float turnX, float turnY)
@@ -27,12 +27,12 @@ namespace Systems.PlayerSystem
             }
             
             _cameraRotation -= turnY * turnSensitivity * Time.deltaTime;
-            _cameraRotation = Mathf.Clamp(_cameraRotation, -45f, 45f); // Kameranın aşırı dönmesini engeller
+            _cameraRotation = Mathf.Clamp(_cameraRotation, -45f, 45f);
 
             _playerRotation = turnX * turnSensitivity * Time.deltaTime;
             
-            cameraBody.localRotation = Quaternion.Euler(_cameraRotation, 0f, 0f); // Kamerayı dikey eksende döndürür
-            playerBody.Rotate(Vector3.up * _playerRotation); // Oyuncu gövdesini yatay eksende döndürür
+            cameraBody.localRotation = Quaternion.Euler(_cameraRotation, 0f, 0f); 
+            playerBody.Rotate(Vector3.up * _playerRotation);
         }
 
         public void SetCameraForOnUIStatus(bool status)

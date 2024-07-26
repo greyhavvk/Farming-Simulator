@@ -1,8 +1,7 @@
-using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Core.UIManager
+namespace Core.UIManager.Inventory
 {
     public abstract class InteractablePanel : MonoBehaviour, IPointerEnterHandler, IPointerDownHandler,
         IPointerUpHandler, IDragHandler, IDropHandler
@@ -51,7 +50,7 @@ namespace Core.UIManager
             PointerUp,
             PointerDown,
             PointerEnter,
-            PointerExit,
+            PointerExit
         }
     }
 }

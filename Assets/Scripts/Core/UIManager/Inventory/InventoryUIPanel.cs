@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Core.InputManager;
 using DG.Tweening;
-using Systems.InventorySystem;
 using Systems.InventorySystem.InventoryItems;
 using Systems.InventorySystem.InventoryItems.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Core.UIManager
+namespace Core.UIManager.Inventory
 {
     public class InventoryUIPanel : MonoBehaviour, IInventoryUI
     {
@@ -107,22 +106,23 @@ namespace Core.UIManager
                 return;
             }
 
-            if (panel.GetInventoryItemData() is FarmingItemData farmingItemData && _holdingItemData is FarmingItemData holdingFarmingItemData)
+            var farmingItemData = panel.GetInventoryItemData();
+            if (farmingItemData!=null && _holdingItemData!=null)
             {
-                if (farmingItemData.FarmingItem is SeedFarmingItem seed && holdingFarmingItemData.FarmingItem is SeedFarmingItem holdingSeed)
+                if (farmingItemData.FarmingItem is SeedFarmingItem seed && _holdingItemData.FarmingItem is SeedFarmingItem holdingSeed)
                 {
                     if (seed.PlantType == holdingSeed.PlantType)
                     {
-                        _onFillStackFromAnother?.Invoke(farmingItemData, holdingFarmingItemData);
+                        _onFillStackFromAnother?.Invoke(farmingItemData, _holdingItemData);
                         ClearHoldingItem();
                         return;
                     }
                 }
-                else if (farmingItemData.FarmingItem is HarvestProductFarmingItem harvest && holdingFarmingItemData.FarmingItem is SeedFarmingItem holdingHarvest)
+                else if (farmingItemData.FarmingItem is HarvestProductFarmingItem harvest && _holdingItemData.FarmingItem is SeedFarmingItem holdingHarvest)
                 {
                     if (harvest.PlantType == holdingHarvest.PlantType)
                     {
-                        _onFillStackFromAnother?.Invoke(farmingItemData, holdingFarmingItemData);
+                        _onFillStackFromAnother?.Invoke(farmingItemData, _holdingItemData);
                         ClearHoldingItem();
                         return;
                     }

@@ -1,6 +1,6 @@
 using System;
 
-namespace Core.UIManager
+namespace Core.UIManager.Inventory
 {
     public class DropItemContainerPanel : InteractablePanel
     {
