@@ -21,16 +21,13 @@ namespace Systems.PlacementSystem
         {
             foreach (var cell in cells)
             {
-                if (!IsWithinBounds(cell))
+                if (IsWithinBounds(cell))
                 {
-                    throw new ArgumentOutOfRangeException("The requested area is out of bounds.");
+                    if (_grid[cell.x, cell.y])
+                    {
+                        return false;
+                    }
                 }
-                
-                if (_grid[cell.x, cell.y])
-                {
-                    return false;
-                }
-                
             }
 
             return true;
@@ -38,14 +35,12 @@ namespace Systems.PlacementSystem
 
         public void PlaceItem(List<Vector2Int> cells)
         {
-            if (!IsCellsEmpty(cells))
+            if (IsCellsEmpty(cells))
             {
-                throw new InvalidOperationException("The area is not empty.");
-            }
-
-            foreach (var cell in cells)
-            {
-                _grid[cell.x, cell.y] = true;
+                foreach (var cell in cells)
+                {
+                    _grid[cell.x, cell.y] = true;
+                }
             }
         }
 
@@ -53,12 +48,12 @@ namespace Systems.PlacementSystem
         {
             foreach (var cell in cells)
             {
-                if (!IsWithinBounds(cell))
+                if (IsWithinBounds(cell))
                 {
-                    throw new ArgumentOutOfRangeException("The requested area is out of bounds.");
+                    _grid[cell.x, cell.y] = false;
                 }
                 
-                _grid[cell.x, cell.y] = false;
+                
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using Core.InputManager;
+﻿using System.Collections.Generic;
+using Core.InputManager;
 using Systems.FarmingSystems;
 using UnityEditor;
 using UnityEngine;
@@ -7,7 +8,9 @@ namespace Systems.PlacementSystem
 {
     public class PlacementManager : MonoBehaviour
     {
-        [SerializeField] private PlaceableItem testObject;
+        [SerializeField] private List<PlaceableItem> placeableItems;
+        [SerializeField] private PlaceableItem marketPlaceableItem;
+        [SerializeField] private Transform marketRefPoint;
         [SerializeField] private GridController gridController;
         [SerializeField] private LayerMask groundLayerMask;
         [SerializeField] private float placeDistance;
@@ -27,6 +30,25 @@ namespace Systems.PlacementSystem
             _placementInput = placementInput;
             gridController.Initialize();
             enabled = false;
+            PlaceAtPoint(marketPlaceableItem, marketRefPoint.position);
+        }
+
+        private void PlaceAtPoint(PlaceableItem placeableItem, Vector3 position)
+        {
+            var placeable = Instantiate(placeableItem);
+            var nearestGridPosition = gridController.GetNearestGridCellPosition(position);
+            placeable.transform.position = nearestGridPosition;
+            PlaceItem(placeable);
+        }
+
+
+        public void StartPlacement(int placeableItemID)
+        {
+            _currentItem = Instantiate(placeableItems[placeableItemID]);
+
+            _currentPosition = Vector3.zero;
+
+            enabled = true;
         }
         
         //TODO yerleştirme iptal tuşunu eklemeliyiz. ya da şimdilik boş veririm.
@@ -99,7 +121,7 @@ namespace Systems.PlacementSystem
         private void PlaceCurrentItem()
         {
             PlaceItem(_currentItem);
-            _currentItem.Place(_currentPosition);
+            _currentItem.Place();
             if (_currentItem.gameObject.CompareTag("Field"))
             {
                 _fieldAdded.AddField(_currentItem.gameObject);
@@ -133,13 +155,8 @@ namespace Systems.PlacementSystem
         {
             if (gridController.IsCellEmpty(item.Prefab.transform, item.LocalPositions))
             {
-                var position = gridController.PlaceItem(item.Prefab.transform, item.LocalPositions);
-                item.Place(position);
-            }
-            else
-            {
-                // Log or handle the case where placement fails
-                Debug.LogWarning("Cell is not empty or cannot place the item.");
+                gridController.PlaceItem(item.Prefab.transform, item.LocalPositions);
+                item.Place();
             }
         }
     }

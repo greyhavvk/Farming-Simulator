@@ -12,7 +12,7 @@ namespace Systems.InventorySystem.InventoryItems
         public PlantType PlantType { get; }
         public int ProductID { get; }
 
-        public SeedFarmingItem(FarmingItemData farmingItemData, ItemFinanceData itemFinanceData, int itemIndexID, Sprite icon, int maxStackCount, PlantType plantType, List<FarmingProgress> farmingJobs, int productID) : base(farmingItemData, itemFinanceData, itemIndexID, icon, maxStackCount)
+        public SeedFarmingItem(FarmingItemData farmingItemData, ItemFinanceData itemFinanceData, int itemIndexID, Sprite icon, int maxStackCount, int initStackCount, PlantType plantType, List<FarmingProgress> farmingJobs, int productID) : base(farmingItemData, itemFinanceData, itemIndexID, icon, maxStackCount,initStackCount)
         {
             PlantType = plantType;
             FarmingJobs = farmingJobs;

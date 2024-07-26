@@ -14,18 +14,27 @@ namespace Systems.PlayerSystem
         private Action<GameObject> _onFieldInteracted;
         private Action _onInteractingTried;
         private Action _onMarketInteracted;
+        private Action _onFieldInteractionEnded;
         private Transform _currentInteractingObject;
         
-        public void Initialize(Action<GameObject> onFieldInteracted, Action onInteractingTried, Action onMarketInteracted)
+        public void Initialize(Action<GameObject> onFieldInteracted, Action onInteractingTried, Action onMarketInteracted, Action onFieldInteractionEnded)
         {
+            _onFieldInteractionEnded = onFieldInteractionEnded;
             _onMarketInteracted = onMarketInteracted;
             _onInteractingTried = onInteractingTried;
             _onFieldInteracted = onFieldInteracted;
         }
 
-        public void CancelInteraction()
+        private void CancelInteraction()
         {
             _currentInteractingObject = null;
+            _onFieldInteractionEnded?.Invoke();
+        }
+
+        private void InteractingTried()
+        {
+            CancelInteraction();
+            _onInteractingTried?.Invoke();
         }
         
         public void HandleInteraction(IPlayerInput playerInput)
@@ -42,19 +51,17 @@ namespace Systems.PlayerSystem
                             _currentInteractingObject = _hit.transform;
                             _onFieldInteracted?.Invoke(_currentInteractingObject.gameObject);
                             break;
-                        case "Shop":
+                        case "Market":
                             _onMarketInteracted?.Invoke();
                             break;
                         default:
-                            CancelInteraction();
-                            _onInteractingTried?.Invoke();
+                            InteractingTried();
                             break;
                     }
                 }
                 else
                 {
-                    _onInteractingTried?.Invoke();
-                    CancelInteraction();
+                    InteractingTried();
                     // RANDOM TIKLAMA OLMUŞ. ONA GÖRE İŞLEM YÜRÜT.
                 }
             

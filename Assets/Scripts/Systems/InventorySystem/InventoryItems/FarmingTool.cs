@@ -8,9 +8,9 @@ namespace Systems.InventorySystem.InventoryItems
     public class FarmingTool : FarmingItem
     {
         public FarmingJobType FarmingJobType { get; }
-        public int FarmingJobSpeedAdder { get; }
+        public float FarmingJobSpeedAdder { get; }
         
-        public FarmingTool(FarmingItemData farmingItemData, ItemFinanceData itemFinanceData, int itemIndexID, Sprite icon, FarmingJobType farmingJobType, int farmingJobSpeedAdder) : base(farmingItemData, itemFinanceData, itemIndexID, icon)
+        public FarmingTool(FarmingItemData farmingItemData, ItemFinanceData itemFinanceData, int itemIndexID, Sprite icon, FarmingJobType farmingJobType, float farmingJobSpeedAdder) : base(farmingItemData, itemFinanceData, itemIndexID, icon)
         {
             FarmingJobType = farmingJobType;
             FarmingJobSpeedAdder = farmingJobSpeedAdder;

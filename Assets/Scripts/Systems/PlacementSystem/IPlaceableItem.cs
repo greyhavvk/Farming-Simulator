@@ -9,7 +9,7 @@ namespace Systems.PlacementSystem
         List<Vector3List> LocalPositions { get; }
         GameObject Prefab { get; }
 
-        void Place(Vector3 position);
+        void Place();
         void Remove();
     }
 }

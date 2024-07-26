@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Systems.FarmingSystems;
+using Systems.InventorySystem.InventoryItems;
 using Systems.InventorySystem.InventoryItems.Data;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ namespace Systems.PlayerSystem
 {
     public class PlayerHoldingItemHandler : MonoBehaviour
     {
+        [SerializeField] private Animator animator;
         [SerializeField] private List<GameObject> holdingItems;
         private FarmingItemData _holdingItem;
         private IInteractedField _interactedField;
@@ -33,7 +35,11 @@ namespace Systems.PlayerSystem
 
         private void UseItemAnimation()
         {
-            //TODO eşya kullanma animasyonları ayarlanmalı
+            if (_holdingItem.FarmingItem is FarmingTool farmingTool)
+            {
+                animator.SetInteger("usingItem", (int)farmingTool.FarmingJobType);
+            }
+            animator.SetBool("itemUsing", true);
         }
 
         public void Initialize(IInteractedField interactedField)
@@ -53,7 +59,13 @@ namespace Systems.PlayerSystem
 
         public void InteractingTriedAnimation()
         {
-            //TODO boş el animasyonu yap.
+            animator.SetTrigger("interactionTried");
+        }
+
+        public void FieldInteractionEnded()
+        {
+            animator.SetInteger("usingItem", -1);
+            animator.SetBool("itemUsing", false);
         }
     }
 }

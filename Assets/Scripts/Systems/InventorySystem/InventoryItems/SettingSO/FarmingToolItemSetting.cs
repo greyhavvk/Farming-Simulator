@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace Systems.InventorySystem.InventoryItems.SettingSO
 {
-    [CreateAssetMenu(fileName = "InventoryItem", menuName = "InventoryItem", order = 0)]
+    [CreateAssetMenu(fileName = "FarmingToolItemSetting", menuName = "InventoryItem/FarmingToolItemSetting", order = 0)]
     public class FarmingToolItemSetting:InventoryItemSetting
     {
         [SerializeField] private FarmingJobType farmingJobType;
-        [SerializeField] private int farmingJobSpeedAdder;
+        [SerializeField] private float farmingJobSpeedAdder;
         public FarmingJobType FarmingJobType => farmingJobType;
-        public int FarmingJobSpeedAdder => farmingJobSpeedAdder;
+        public float FarmingJobSpeedAdder => farmingJobSpeedAdder;
     }
 }

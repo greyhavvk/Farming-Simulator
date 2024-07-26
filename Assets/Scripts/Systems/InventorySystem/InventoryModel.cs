@@ -1,4 +1,6 @@
-﻿using Systems.InventorySystem.InventoryItems;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Systems.InventorySystem.InventoryItems;
 using Systems.InventorySystem.InventoryItems.Data;
 
 namespace Systems.InventorySystem
@@ -131,7 +133,7 @@ namespace Systems.InventorySystem
             return stackableItem != null && stackableItem.CurrentStackCount == 0;
         }
 
-        private void RemoveItemFromInventory(FarmingItemData itemData)
+        public void RemoveItemFromInventory(FarmingItemData itemData)
         {
             for (int i = 0; i < _items.Length; i++)
             {
@@ -141,6 +143,32 @@ namespace Systems.InventorySystem
                     break;
                 }
             }
+        }
+
+        public List<FarmingItemData> GetItemList()
+        {
+            return _items.ToList();
+        }
+
+        public void SetItemList(FarmingItemData[] items)
+        {
+            _items = items;
+        }
+
+        public List<FarmingItemData> GetItemsForSell()
+        {
+            var newList = new List<FarmingItemData>();
+
+            foreach (var item in _items)
+            {
+                if (item!=null)
+                {
+                    newList.Add(item);
+                }
+            }
+
+            return newList;
+
         }
     }
 }

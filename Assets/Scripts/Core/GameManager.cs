@@ -1,8 +1,10 @@
 using System;
 using Systems.FarmingSystems;
+using Systems.FinanceSystem;
 using Systems.InventorySystem;
 using Systems.InventorySystem.InventoryItems;
 using Systems.InventorySystem.InventoryItems.Data;
+using Systems.MarketSystem;
 using Systems.PlacementSystem;
 using Systems.PlayerSystem;
 using Systems.TaskSystem;
@@ -19,6 +21,8 @@ namespace Core
         [SerializeField] private PlacementManager placementManager;
         [SerializeField] private InventoryController inventoryController;
         [SerializeField] private FarmingController farmingController;
+        [SerializeField] private FinanceController financeController;
+        [SerializeField] private MarketController marketController;
         
         private void Awake()
         {
@@ -49,11 +53,21 @@ namespace Core
             
             taskManager.Initialize(uiManager, SetTaskListener, ClearTaskListeners);
             
+            financeController.Initialize(uiManager, marketController.MoneyValueChanged);
+            
+            marketController.Initialize(financeController, uiManager, placementManager.StartPlacement, inventoryController.InstanceItemFromPosition, ItemSold);
+            
+        }
+
+        private void ItemSold(FarmingItemData farmingItemData)
+        {
+            playerController.RemoveItemFromHotBar(farmingItemData);
+            inventoryController.RemoveItem(farmingItemData);
         }
 
         private void MarketInteracted()
         {
-            //TODO market açmak için tetikleyici
+           marketController.OpenMarket(inventoryController.GetItemsForSell());
         }
 
         private void SetListeners()
@@ -92,9 +106,9 @@ namespace Core
         {
             playerController.ClearTaskListeners();
             farmingController.ClearTaskListeners();
+            marketController.ClearTaskListeners();
         }
 
-        //todo taskler'a satma task'i de eklenecek.
         private void SetTaskListener(TaskModel taskModel)
         {
             switch (taskModel)
@@ -103,6 +117,7 @@ namespace Core
                     playerController.TriggerTaskListener(taskManager.UpdateTaskProgress);
                     break;
                 case SellTask:
+                    marketController.TriggerTaskListener(taskManager.UpdateTaskProgress);
                     break;
                 case PlantSeedTask:
                     farmingController.TriggerTaskListener(taskManager.UpdateTaskProgress);

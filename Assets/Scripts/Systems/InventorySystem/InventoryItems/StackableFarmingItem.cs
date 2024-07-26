@@ -18,8 +18,9 @@ namespace Systems.InventorySystem.InventoryItems
         }
 
         public StackableFarmingItem(FarmingItemData farmingItemData, ItemFinanceData itemFinanceData, 
-            int itemIndexID, Sprite icon, int maxStackCount) : base(farmingItemData, itemFinanceData, itemIndexID, icon)
+            int itemIndexID, Sprite icon, int maxStackCount, int initStackCount) : base(farmingItemData, itemFinanceData, itemIndexID, icon)
         {
+            _currentStackCount = 1;
             _maxStackCount = maxStackCount;
         }
     }

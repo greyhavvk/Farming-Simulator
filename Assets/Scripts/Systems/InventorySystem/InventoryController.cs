@@ -16,7 +16,7 @@ namespace Systems.InventorySystem
         [SerializeField] private DropItem refDropItem;
         [SerializeField] private List<InventoryItemSetting> itemSettings;
         private ObjectPool _dropItemPool;
-        private FarmingItemData[] _items;
+       // private FarmingItemData[] _items;
         [SerializeField] private int inventorySize;
         private IInventoryUI _inventoryUI;
 
@@ -29,11 +29,11 @@ namespace Systems.InventorySystem
         {
             _inventoryInput = inventoryInput;
             _dropItemPool = new ObjectPool(refDropItem, 10, new DropItemPoolableObjectInitializeData());
-            _items = new FarmingItemData[inventorySize];
+            var items = new FarmingItemData[inventorySize];
             _inventoryUI = inventoryUI;
             _inventoryUI.InitializeInventoryUI(inventorySize);
 
-            _inventoryModel = new InventoryModel(_items);
+            _inventoryModel = new InventoryModel(items);
             _dropItemHandler = new DropItemHandler(_dropItemPool, dropCenterTransform);
         }
         
@@ -81,6 +81,12 @@ namespace Systems.InventorySystem
             _inventoryUI.RefreshInventory();
         }
 
+        public void RemoveItem(FarmingItemData farmingItemData)
+        {
+            _inventoryModel.RemoveItemFromInventory(farmingItemData);
+            _inventoryUI.RefreshInventory();
+        }
+
         public void TryAddDroppedItem(GameObject addedItemGameObject)
         {
             _dropItemHandler.TryAddItem(addedItemGameObject, _inventoryModel);
@@ -104,12 +110,12 @@ namespace Systems.InventorySystem
                     case HarvestProductFarmingItemSetting harvestProductFarmingItemSetting:
                         farmingItem = new HarvestProductFarmingItem(farmingItemData, inventoryItemSetting.FinanceData,
                             inventoryItemSetting.ItemIndexID, inventoryItemSetting.Icon,
-                            harvestProductFarmingItemSetting.MaxStackCount, harvestProductFarmingItemSetting.PlantType);
+                            harvestProductFarmingItemSetting.MaxStackCount,1, harvestProductFarmingItemSetting.PlantType);
                         break;
                     case SeedFarmingItemSetting seedFarmingItemSetting:
                         farmingItem = new SeedFarmingItem(farmingItemData, inventoryItemSetting.FinanceData,
                             inventoryItemSetting.ItemIndexID, inventoryItemSetting.Icon,
-                            seedFarmingItemSetting.MaxStackCount, seedFarmingItemSetting.PlantType, seedFarmingItemSetting.FarmingJobs, seedFarmingItemSetting.ProductID);
+                            seedFarmingItemSetting.MaxStackCount,1, seedFarmingItemSetting.PlantType, seedFarmingItemSetting.FarmingJobs, seedFarmingItemSetting.ProductID);
                         break;
                     case FarmingToolItemSetting farmingToolItemSetting:
                         farmingItem = new FarmingTool(farmingItemData, inventoryItemSetting.FinanceData,
@@ -128,17 +134,22 @@ namespace Systems.InventorySystem
 
         private void UpdateItemList()
         {
-            _items = _inventoryUI.CalculateNewFarmingItemList().ToArray();
+            _inventoryModel.SetItemList(_inventoryUI.CalculateNewFarmingItemList().ToArray());
         }
 
         private void UpdateInventoryUI()
         {
-            _inventoryUI.SetInventoryList(_items.ToList());
+            _inventoryUI.SetInventoryList(_inventoryModel.GetItemList());
         }
 
         public void FillItemStackFromAnother(FarmingItemData target, FarmingItemData filler)
         {
             _inventoryModel.FillItemStackFromAnother(target,filler);
+        }
+
+        public List<FarmingItemData> GetItemsForSell()
+        {
+            return _inventoryModel.GetItemsForSell();
         }
     }
 }

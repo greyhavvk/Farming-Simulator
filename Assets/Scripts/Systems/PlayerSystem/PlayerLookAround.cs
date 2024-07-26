@@ -16,7 +16,7 @@ namespace Systems.PlayerSystem
             _cameraRotation = cameraBody.localEulerAngles.x;
             turnSensitivity = sensitivity;
             //TODO cursor locklamaya ayar çekilecek.
-            Cursor.lockState = CursorLockMode.Locked; // Fare imleci ekranın ortasında kilitlenir
+     //       Cursor.lockState = CursorLockMode.Locked; // Fare imleci ekranın ortasında kilitlenir
         }
 
         public void HandleLookAround(float turnX, float turnY)

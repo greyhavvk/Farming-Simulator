@@ -13,8 +13,6 @@ namespace Systems.PlayerSystem
         private int _currentSelectedItemIndex;
         private IInventoryUI _inventoryUI;
         private Action<FarmingItemData> _onItemSelectedFromHotBar;
-        private int _scrollCounter;
-        private const int ScrollThreshold = 5; // Her 5 kaydırma hareketinde bir tetikleme
 
         public void Initialize(IInventoryUI inventoryUI, Action<FarmingItemData> onItemSelectedFromHotBar)
         {
@@ -22,11 +20,10 @@ namespace Systems.PlayerSystem
             _inventoryUI = inventoryUI;
             _itemDatas = new FarmingItemData[hotBarSize];
             _currentSelectedItemIndex = 0;
-            _scrollCounter = 0;
 
-            _inventoryUI.InitializeHotBarUI(hotBarSize, ItemSelectedFromHotBar);
+            _inventoryUI.InitializeHotBarUI(hotBarSize, ItemSelectedFromIndex);
             _inventoryUI.SetHotBarList(_itemDatas.ToList());
-            ItemSelectedFromHotBar(_currentSelectedItemIndex);
+            ItemSelectedFromIndex(_currentSelectedItemIndex);
         }
 
         public void RefreshHotBar()
@@ -34,6 +31,7 @@ namespace Systems.PlayerSystem
             _itemDatas = _inventoryUI.CalculateNewHotBarItemList().ToArray();
             _inventoryUI.SetHotBarList(_itemDatas.ToList());
             _inventoryUI.RefreshInventory();
+            ItemSelectedFromIndex(_currentSelectedItemIndex);
         }
 
         public void RemoveItemFromHotBar(FarmingItemData itemData)
@@ -49,13 +47,13 @@ namespace Systems.PlayerSystem
             }
         }
 
-        private void ItemSelectedFromHotBar(int hotBarIndex)
+        private void ItemSelectedFromIndex(int hotBarIndex)
         {
             _currentSelectedItemIndex = hotBarIndex;
             _inventoryUI.ItemSelectedFromHotBar(_currentSelectedItemIndex);
             _onItemSelectedFromHotBar?.Invoke(_itemDatas[_currentSelectedItemIndex]);
         }
-        
+
         private void SelectItemFromIndexAdder(int indexAdder)
         {
             _currentSelectedItemIndex += indexAdder;
@@ -67,7 +65,8 @@ namespace Systems.PlayerSystem
             {
                 _currentSelectedItemIndex = 0;
             }
-            ItemSelectedFromHotBar(_currentSelectedItemIndex);
+
+            ItemSelectedFromIndex(_currentSelectedItemIndex);
         }
 
 
@@ -75,18 +74,8 @@ namespace Systems.PlayerSystem
         {
             if (scrollDelta != 0)
             {
-                _scrollCounter += (int)scrollDelta;
-
-                if (Mathf.Abs(_scrollCounter) >= ScrollThreshold)
-                {
-                    int scrollDirection = _scrollCounter > 0 ? 1 : -1;
-                    SelectItemFromIndexAdder(scrollDirection);
-                    _scrollCounter = 0; // Sayaç sıfırlanır
-                }
-            }
-            else
-            {
-                _scrollCounter = 0; 
+                int scrollDirection = scrollDelta > 0 ? 1 : -1;
+                SelectItemFromIndexAdder(scrollDirection);
             }
         }
     }

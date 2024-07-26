@@ -23,13 +23,18 @@ namespace Systems.PlayerSystem
 
         public void Initialize(IPlayerInput playerInput, IInventoryUI inventoryUI, Action<GameObject> onDropItemDetected, IInteractedField interactedField, Action onMarketInteracted)
         {
-            interaction.Initialize(FieldInteracted, InteractingTried, onMarketInteracted);
+            interaction.Initialize(FieldInteracted, InteractingTried, onMarketInteracted, FieldInteractionEnded);
             detectionHandler.Initialize(onDropItemDetected);
             _playerInput = playerInput;
             lookAround.Initialize(playerSettings.TurnSensitivity); // PlayerSettings'ten dönme sensitivity'i alarak initialize ettik
             movement.Initialize(playerSettings.MoveSpeed); // PlayerSettings'ten hareket hızını alarak initialize ettik
             hotBarHandler.Initialize(inventoryUI, holdingItemHandler.SetHoldingItem);
             holdingItemHandler.Initialize(interactedField);
+        }
+
+        private void FieldInteractionEnded()
+        {
+            holdingItemHandler.FieldInteractionEnded();
         }
 
         private void InteractingTried()

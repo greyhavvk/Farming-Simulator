@@ -7,15 +7,13 @@ namespace Systems.PlacementSystem
     public class PlaceableItem : MonoBehaviour, IPlaceableItem
     {
         [SerializeField] private List<Vector3List> localPositions; // Öğenin boyutu
-        [SerializeField] private GameObject prefab; // Öğenin prefab'ı
-        [SerializeField] private MeshRenderer placeableMeshRenderer;
+        [SerializeField] private List<MeshRenderer> placeableMeshRenderers;
         public  List<Vector3List> LocalPositions => localPositions;
-        public GameObject Prefab => prefab;
+        public GameObject Prefab => gameObject;
 
-        public void Place(Vector3 position)
+        public void Place()
         {
             SetPlaceableColor(Color.white);
-            transform.position = position;
         }
 
         public void RotateItem()
@@ -40,9 +38,12 @@ namespace Systems.PlacementSystem
 
         private void SetPlaceableColor(Color color)
         {
-            var materials = placeableMeshRenderer.materials;
-            materials[0].color = color;
-            placeableMeshRenderer.materials = materials;
+            foreach (var placeableMeshRenderer in placeableMeshRenderers)
+            {
+                var materials = placeableMeshRenderer.materials;
+                materials[0].color = color;
+                placeableMeshRenderer.materials = materials;
+            }
         }
 
         

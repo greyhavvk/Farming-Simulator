@@ -54,50 +54,23 @@ namespace Systems.PlacementSystem
         {
             var cells = CalculateCells(itemTransform, localPositions);
 
-            try
-            {
-                return _gridModel.IsCellsEmpty(cells);
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                Debug.LogError($"Error checking cell empty status: {ex.Message}");
-                return false;
-            }
+            return cells.Count>0 && _gridModel.IsCellsEmpty(cells);
         }
 
-        public Vector3 PlaceItem(Transform itemTransform, List<Vector3List> localPositions)
+        public void PlaceItem(Transform itemTransform, List<Vector3List> localPositions)
         {
             var cells = CalculateCells(itemTransform, localPositions);
-            var itemTransformPosition = itemTransform.position;
 
-            try
-            {
-                _gridModel.PlaceItem(cells);
-                return _gridOrigin + itemTransform.TransformPoint(localPositions[0].vector3List[0]);
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                Debug.LogError($"Error placing item: {ex.Message}");
-                return itemTransformPosition; // Return original position if placement fails
-            }
-            catch (InvalidOperationException ex)
-            {
-                Debug.LogError($"Error placing item: {ex.Message}");
-                return itemTransformPosition; // Return original position if placement fails
-            }
+            _gridModel.PlaceItem(cells);
         }
 
         public void RemoveItem(Transform itemTransform, List<Vector3List> localPositions)
         {
             var cells = CalculateCells(itemTransform, localPositions);
 
-            try
+            if (cells.Count>0)
             {
                 _gridModel.RemoveItem(cells);
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                Debug.LogError($"Error removing item: {ex.Message}");
             }
         }
 

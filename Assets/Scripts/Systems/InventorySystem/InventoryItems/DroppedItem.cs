@@ -25,7 +25,7 @@ namespace Systems.InventorySystem
         public void Drop(Vector3 dropCenter)
         {
             dropItemCollider.enabled = false;
-            float angle = Random.Range(0, 2 * Mathf.PI);
+            float angle = Random.Range(-Mathf.PI / 2, Mathf.PI / 2);
             float radius = Random.Range(_minRadius, _maxRadius);
 
             // Hedef pozisyonu hesapla

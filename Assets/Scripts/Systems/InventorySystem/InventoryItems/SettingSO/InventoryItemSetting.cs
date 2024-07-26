@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Systems.InventorySystem.InventoryItems.SettingSO
 {
-    [CreateAssetMenu(fileName = "InventoryItem", menuName = "InventoryItem", order = 0)]
+    [CreateAssetMenu(fileName = "InventoryItemSetting", menuName = "InventoryItem/InventoryItemSetting", order = 0)]
     public class InventoryItemSetting : ScriptableObject
     {
         [SerializeField] private Sprite icon;

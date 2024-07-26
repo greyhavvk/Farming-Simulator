@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Systems.InventorySystem.InventoryItems.SettingSO
 {
-    [CreateAssetMenu(fileName = "InventoryItem", menuName = "InventoryItem", order = 0)]
+    [CreateAssetMenu(fileName = "SeedFarmingItemSetting", menuName = "InventoryItem/SeedFarmingItemSetting", order = 0)]
     public class SeedFarmingItemSetting:StackableInventoryItemSetting
     {
         [SerializeField] private List<FarmingProgress> farmingJobs;

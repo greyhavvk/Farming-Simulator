@@ -299,6 +299,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_GrainBag_Open_01
       objectReference: {fileID: 0}
+    - target: {fileID: 1773254948384434, guid: 72ef85b35d249d442a4afc69a270249c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4999707621883582, guid: 72ef85b35d249d442a4afc69a270249c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5669
@@ -452,6 +456,10 @@ PrefabInstance:
     - target: {fileID: 1859346367130030, guid: be0c2b294c4f84945ae8baaeea3e386f, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Corn_01_Group
+      objectReference: {fileID: 0}
+    - target: {fileID: 1859346367130030, guid: be0c2b294c4f84945ae8baaeea3e386f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4228275043470396, guid: be0c2b294c4f84945ae8baaeea3e386f, type: 3}
       propertyPath: m_LocalScale.x
@@ -624,6 +632,10 @@ PrefabInstance:
     - target: {fileID: 1773254948384434, guid: 72ef85b35d249d442a4afc69a270249c, type: 3}
       propertyPath: m_Name
       value: SM_Prop_GrainBag_Open_01 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1773254948384434, guid: 72ef85b35d249d442a4afc69a270249c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4999707621883582, guid: 72ef85b35d249d442a4afc69a270249c, type: 3}
       propertyPath: m_LocalScale.x
@@ -1074,6 +1086,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Chilli_01_Group
       objectReference: {fileID: 0}
+    - target: {fileID: 1782199874563070, guid: 64566f41cf9aae24eaaeeb66935ab6a4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4558215484826908, guid: 64566f41cf9aae24eaaeeb66935ab6a4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1219,6 +1235,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Tomato_01_Group
       objectReference: {fileID: 0}
+    - target: {fileID: 1393761842596918, guid: 81bc710a4ec5fcf4bbe9b98ec25cb627, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4313404059034182, guid: 81bc710a4ec5fcf4bbe9b98ec25cb627, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1287,6 +1307,10 @@ PrefabInstance:
     - target: {fileID: 1773254948384434, guid: 72ef85b35d249d442a4afc69a270249c, type: 3}
       propertyPath: m_Name
       value: SM_Prop_GrainBag_Open_01 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1773254948384434, guid: 72ef85b35d249d442a4afc69a270249c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4999707621883582, guid: 72ef85b35d249d442a4afc69a270249c, type: 3}
       propertyPath: m_LocalScale.x
