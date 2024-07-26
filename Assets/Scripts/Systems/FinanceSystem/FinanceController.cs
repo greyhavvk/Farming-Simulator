@@ -19,10 +19,10 @@ namespace Systems.FinanceSystem
             _financeModel.Initialize(initialMoney,HandleMoneyChanged);
         }
 
-        private void OnDisable()
+        public void DisableListeners()
         {
             _moneyValueChanged = null;
-            _financeModel?.OnDestroy();
+            _financeModel?.DisableListeners();
         }
 
         private void HandleMoneyChanged(int currentMoney)

@@ -25,7 +25,7 @@ namespace Systems.TaskSystem
             SetTask();
         }
 
-        private void OnDisable()
+        public void DisableListeners()
         {
             _clearTaskListeners = null;
             _updateTaskProgressListener = null;

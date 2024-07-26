@@ -29,6 +29,14 @@ namespace Systems.PlayerSystem
             hotBarHandler.Initialize(inventoryUI, holdingItemHandler.SetHoldingItem);
             holdingItemHandler.Initialize(interactedField);
         }
+        
+        public void DisableListeners()
+        {
+            movement.DisableListeners();
+            interaction.DisableListeners();
+            hotBarHandler.DisableListeners();
+            detectionHandler.DisableListeners();
+        }
 
         private void SetPlayerMoveAndCameraForOnUIStatus(bool status)
         {

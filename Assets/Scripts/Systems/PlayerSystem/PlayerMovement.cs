@@ -25,7 +25,7 @@ namespace Systems.PlayerSystem
             _playerTransform = transform;
         }
 
-        private void OnDisable()
+        public void DisableListeners()
         {
             onUpdateTaskProgress = null;
         }

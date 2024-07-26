@@ -37,7 +37,7 @@ namespace Systems.MarketSystem
             _itemsForSell = new Dictionary<Product, FarmingItemData>();
         }
 
-        private void OnDisable()
+        public void DisableListeners()
         {
             _onItemSold = null;
             _onBuildingBought = null;

@@ -29,7 +29,7 @@ namespace Core.UIManager
             marketUIPanelController.Initialize();
         }
 
-        private void OnDisable()
+        public void DisableListeners()
         {
             inventoryUIPanel.DisableListeners();
         }

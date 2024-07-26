@@ -16,7 +16,7 @@ namespace Systems.FinanceSystem
             NotifyMoneyChanged();
         }
 
-        public void OnDestroy()
+        public void DisableListeners()
         {
             _onMoneyChanged = null;
         }

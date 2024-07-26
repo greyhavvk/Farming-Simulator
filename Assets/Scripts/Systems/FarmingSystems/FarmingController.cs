@@ -21,11 +21,15 @@ namespace Systems.FarmingSystems
             _fields = new Dictionary<GameObject, FarmingField>();
         }
 
-        private void OnDisable()
+        public void DisableListeners()
         {
             _onHarvestProduct = null;
             _onSeedUsed = null;
             _onHarvestProduct = null;
+            foreach (var farmingField in _fields.Values)
+            {
+                farmingField.DisableListeners();
+            }
         }
 
         public void AddField(GameObject fieldGameObject)

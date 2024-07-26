@@ -12,6 +12,11 @@ namespace Systems.PlayerSystem
         {
             _onDropItemDetected = onDropItemDetected;
         }
+
+        public void DisableListeners()
+        {
+            _onDropItemDetected = null;
+        }
         
         private void OnTriggerEnter(Collider other)
         {

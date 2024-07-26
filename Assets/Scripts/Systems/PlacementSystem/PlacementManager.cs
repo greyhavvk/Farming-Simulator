@@ -24,6 +24,7 @@ namespace Systems.PlacementSystem
         private Ray _ray;
         private RaycastHit _hit;
         private Action _placementEnded;
+        private readonly string _fieldTag = "Field";
 
         public void Initialize(IPlacementInput placementInput, IFieldAdded fieldAdded,Action placementEnded)
         {
@@ -35,7 +36,7 @@ namespace Systems.PlacementSystem
             PlaceAtPoint(marketPlaceableItem, marketRefPoint.position);
         }
 
-        private void OnDisable()
+        public void DisableListeners()
         {
             _placementEnded = null;
         }
@@ -129,10 +130,11 @@ namespace Systems.PlacementSystem
         {
             PlaceItem(_currentItem);
             _currentItem.Place();
-            if (_currentItem.gameObject.CompareTag("Field"))
+            if (_currentItem.gameObject.CompareTag(_fieldTag))
             {
                 _fieldAdded.AddField(_currentItem.gameObject);
             }
+            Debug.Log(_placementEnded);
             _placementEnded?.Invoke();
             _currentItem = null;
             enabled = false;

@@ -35,11 +35,6 @@ namespace Core
             playerController.GainControls();
         }
 
-        private void OnDisable()
-        {
-            ClearListeners();
-        }
-
         private void InitializeComponents()
         {
             inputManager.Initialize();
@@ -181,6 +176,7 @@ namespace Core
 
         private void MarketInteracted()
         {
+            if (_gameState != GameState.Normal) return;
             playerController.LoseControls();
             ChangeGameState(GameState.Market);
             marketController.OpenMarket(inventoryController.GetItemsForSell());
@@ -197,9 +193,22 @@ namespace Core
         {
         }
 
+        private void OnDestroy()
+        {
+            Time.timeScale = 1;
+            ClearListeners();
+        }
+
         private void ClearListeners()
         {
             ClearTaskListeners();
+            placementManager.DisableListeners();
+            taskManager.DisableListeners();
+            playerController.DisableListeners();
+            marketController.DisableListeners();
+            financeController.DisableListeners();
+            farmingController.DisableListeners();
+            uiManager.DisableListeners();
         }
 
         private void FillItemStackFromAnother(FarmingItemData target, FarmingItemData filler)
@@ -258,6 +267,7 @@ namespace Core
         public void OnQuitButtonClicked()
         {
             Time.timeScale = 1;
+            ClearListeners();
             SceneManager.LoadScene(0);
         }
     }

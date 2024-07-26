@@ -26,7 +26,7 @@ namespace Systems.PlayerSystem
             ItemSelectedFromIndex(_currentSelectedItemIndex);
         }
 
-        private void OnDisable()
+        public void DisableListeners()
         {
             _onItemSelectedFromHotBar = null;
         }

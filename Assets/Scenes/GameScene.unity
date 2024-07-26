@@ -1660,7 +1660,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerRigidbody: {fileID: 282417737}
-  moveSpeed: 5
   layerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -1778,7 +1777,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9807d09c2a1a4541972abbf4c635ec36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropItemTag: DropItem
 --- !u!1001 &326219423
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6727,7 +6725,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1517461446}
-  - component: {fileID: 1517461447}
   m_Layer: 5
   m_Name: OptionUI
   m_TagString: Untagged
@@ -6756,20 +6753,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1517461447
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1517461445}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ec4e490405b4f3abfbe039642960163, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  optionMenuOpener: {fileID: 762486957}
-  optionPanel: {fileID: 152607283}
 --- !u!1 &1545378789
 GameObject:
   m_ObjectHideFlags: 0
@@ -8063,6 +8046,7 @@ MonoBehaviour:
   farmingController: {fileID: 1173987987}
   financeController: {fileID: 676824621}
   marketController: {fileID: 247356282}
+  _gameState: 0
 --- !u!4 &1815699399
 Transform:
   m_ObjectHideFlags: 0
@@ -8297,7 +8281,6 @@ MonoBehaviour:
   refButton: {fileID: 1002046373640650454, guid: 1e1f791813510ff46a9ca6c063da99c6,
     type: 3}
   buttonParent: {fileID: 1978347780}
-  panel: {fileID: 1914582108}
 --- !u!1 &1921878840
 GameObject:
   m_ObjectHideFlags: 0
@@ -8446,7 +8429,6 @@ MonoBehaviour:
   refButton: {fileID: 1002046373640650454, guid: 1e1f791813510ff46a9ca6c063da99c6,
     type: 3}
   buttonParent: {fileID: 1416901673}
-  panel: {fileID: 1969009266}
 --- !u!1 &1978347779
 GameObject:
   m_ObjectHideFlags: 0
@@ -8921,7 +8903,6 @@ MonoBehaviour:
   refButton: {fileID: 1002046373640650454, guid: 1e1f791813510ff46a9ca6c063da99c6,
     type: 3}
   buttonParent: {fileID: 444826292}
-  panel: {fileID: 2110266152}
 --- !u!1 &2114953070
 GameObject:
   m_ObjectHideFlags: 0

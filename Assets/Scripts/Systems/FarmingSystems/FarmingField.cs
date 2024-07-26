@@ -35,7 +35,7 @@ namespace Systems.FarmingSystems
             enabled = false;
         }
 
-        private void OnDisable()
+        public void DisableListeners()
         {
             _onHarvestProduct = null;
             _onUpdateTaskProgress = null;

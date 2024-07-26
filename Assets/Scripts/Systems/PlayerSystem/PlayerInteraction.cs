@@ -30,7 +30,7 @@ namespace Systems.PlayerSystem
             _onFieldInteracted = onFieldInteracted;
         }
 
-        private void OnDisable()
+        public void DisableListeners()
         {
             _onFieldInteractionEnded = null;
             _onMarketInteracted = null;
